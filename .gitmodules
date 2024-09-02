@@ -1,0 +1,3 @@
+[submodule "Assets/·ThirdParty/SolarStormToolkit"]
+	path = Assets/·ThirdParty/SolarStormToolkit
+	url = https://github.com/Solar-Storm/UnityToolkit.git
