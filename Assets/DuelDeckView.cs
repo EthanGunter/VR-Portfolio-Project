@@ -2,13 +2,12 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class DuelDeckView : MonoBehaviour, IView<DuelDeck>
+public class DuelDeckView : MonoBehaviour
 {
     [SerializeField] private DuelDeck deck;
     [SerializeField] private TextMeshProUGUI handText;
     [SerializeField] private TextMeshProUGUI drawPileText;
     [SerializeField] private TextMeshProUGUI discardPileText;
-    public DuelDeck Model => deck;
 
     private void OnEnable()
     {
@@ -37,7 +36,4 @@ public class DuelDeckView : MonoBehaviour, IView<DuelDeck>
     {
         discardPileText.text = $"Discard: {discardPile.Count}";
     }
-
-    public void Hide() { }
-    public void Show() { }
 }
