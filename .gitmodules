@@ -1,3 +1,6 @@
 [submodule "Assets/Code/Tools/SODesign"]
 	path = Assets/Code/Tools/SODesign
 	url = https://github.com/EthanGunter/Unity-SODesign.git
+[submodule "Assets/Code/Tools/Unity-Tools"]
+	path = Assets/Code/Tools/Unity-Tools
+	url = https://github.com/EthanGunter/Unity-Tools/
