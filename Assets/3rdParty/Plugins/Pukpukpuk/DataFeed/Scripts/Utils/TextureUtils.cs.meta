@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: b7952f0c40724112ad06eef54f4b7c56
+timeCreated: 1718094102
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Utils/TextureUtils.cs
+  uploadId: 673691

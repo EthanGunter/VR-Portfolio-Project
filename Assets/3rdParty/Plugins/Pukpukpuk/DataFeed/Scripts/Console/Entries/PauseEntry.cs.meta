@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 7839a1f921e84e59befb3521a907d7e5
+timeCreated: 1718337423
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Console/Entries/PauseEntry.cs
+  uploadId: 673691

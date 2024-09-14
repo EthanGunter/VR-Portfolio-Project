@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ebfc1bdfb02447443aa1749ead51519d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ShaderGraph/TrailRendererEmmisive/TrailPrefabs/RocketTrail.prefab
+  uploadId: 685123

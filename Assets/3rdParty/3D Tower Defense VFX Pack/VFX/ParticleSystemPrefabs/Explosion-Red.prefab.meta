@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e1e1d828ffa634d40bacbfe9af08227e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ParticleSystemPrefabs/Explosion-Red.prefab
+  uploadId: 685123

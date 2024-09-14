@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 9526af8789184de39822c144699bda85
+timeCreated: 1718543209
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Console/Windows/Editor/ConsoleConfigEditor.cs
+  uploadId: 673691

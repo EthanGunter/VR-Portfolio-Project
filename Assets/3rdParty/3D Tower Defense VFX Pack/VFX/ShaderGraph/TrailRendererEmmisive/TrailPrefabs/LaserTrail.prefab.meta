@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b5ecc6911611ad84ca2f6122b495c84d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ShaderGraph/TrailRendererEmmisive/TrailPrefabs/LaserTrail.prefab
+  uploadId: 685123

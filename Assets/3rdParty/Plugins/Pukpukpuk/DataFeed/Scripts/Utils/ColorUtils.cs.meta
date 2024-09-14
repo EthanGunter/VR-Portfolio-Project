@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 4103f804cc204f0bae150b5f103d3871
+timeCreated: 1718431457
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Utils/ColorUtils.cs
+  uploadId: 673691

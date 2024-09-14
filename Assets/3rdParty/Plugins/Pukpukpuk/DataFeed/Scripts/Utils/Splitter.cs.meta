@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 8b3c18ccddd04355bf2701c4d390d107
+timeCreated: 1718954796
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Utils/Splitter.cs
+  uploadId: 673691

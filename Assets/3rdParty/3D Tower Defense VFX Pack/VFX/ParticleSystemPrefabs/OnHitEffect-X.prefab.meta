@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 257c51ba5a8efa44e89ac33e2b89621e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ParticleSystemPrefabs/OnHitEffect-X.prefab
+  uploadId: 685123

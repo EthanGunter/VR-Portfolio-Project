@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 9e2b6667f69f46adbb3d3ab79bfce592
+timeCreated: 1718337120
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287894
+  packageName: DataFeed - Console
+  packageVersion: 1.1
+  assetPath: Assets/Plugins/Pukpukpuk/DataFeed/Scripts/Console/Entries/ILogEntry.cs
+  uploadId: 673691

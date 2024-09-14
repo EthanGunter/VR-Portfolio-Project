@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d0ba8af58baa1ba418525eceb053f664
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/Scripts/PreviewScripts/DestroyParticleSystemOnCompletion.cs
+  uploadId: 685123
