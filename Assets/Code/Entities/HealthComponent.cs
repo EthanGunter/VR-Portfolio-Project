@@ -10,7 +10,7 @@ namespace SolarStorm.Entities
     {
         public event Action<float> OnDamaged;
         public event Action<float> OnHealed;
-        public event Action Killed;
+        public event Action OnKilled;
 
         [field: SerializeField] public FloatRef MaxHealth { get; private set; } = 100;
         [field: SerializeField] public float Health { get; protected set; }
@@ -47,7 +47,7 @@ namespace SolarStorm.Entities
             if (!Dead && Health <= 0)
             {
                 Dead = true;
-                Killed?.Invoke();
+                OnKilled?.Invoke();
             }
         }
     }

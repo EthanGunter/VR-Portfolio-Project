@@ -11,15 +11,15 @@ namespace SolarStorm.Entities
     /// The base class of all "living" objects
     /// </summary>
     [RequireComponent(typeof(HealthComponent))]
-    public class GameEntity : MonoBehaviour
+    public abstract class GameEntity : MonoBehaviour
     {
         #region Static Members
 
-        private static Dictionary<Type, HashSet<GameEntity>> allEntities = new();
+        private static Dictionary<Type, HashSet<GameEntity>> _allEntities = new();
 
         public static T FindFirst<T>(Func<GameEntity, bool> predicate = null) where T : GameEntity
         {
-            if (allEntities.TryGetValue(typeof(T), out var tEntities))
+            if (_allEntities.TryGetValue(typeof(T), out var tEntities))
             {
                 if (predicate != null)
                     return (T)tEntities.First(predicate);
@@ -32,7 +32,7 @@ namespace SolarStorm.Entities
         }
         public static IEnumerable<T> FindAll<T>(Func<GameEntity, bool> predicate = null) where T : GameEntity
         {
-            if (allEntities.TryGetValue(typeof(T), out var tEntities))
+            if (_allEntities.TryGetValue(typeof(T), out var tEntities))
             {
                 if (predicate != null)
                     return (IEnumerable<T>)tEntities.Where(predicate).ToList();
@@ -51,7 +51,7 @@ namespace SolarStorm.Entities
 
         [SerializeField] private GameEntityRuntimeSet _belongsTo;
 
-        public virtual void SetPosition(Vector3 position)
+        public virtual void MoveTo(Vector3 position)
         {
             transform.position = position;
         }
@@ -65,27 +65,30 @@ namespace SolarStorm.Entities
         /// </summary>
         protected virtual void Awake()
         {
-            if (_belongsTo != null) { _belongsTo.Add(this); }
-
             Type type = GetType();
-            if (allEntities.TryGetValue(type, out HashSet<GameEntity> list))
+            if (_allEntities.TryGetValue(type, out HashSet<GameEntity> list))
             {
                 list.Add(this);
             }
             else
             {
-                allEntities.Add(GetType(), new HashSet<GameEntity>() { this });
+                _allEntities.Add(GetType(), new HashSet<GameEntity>() { this });
             }
         }
-        protected virtual void OnEnable() { }
+        protected virtual void OnEnable()
+        {
+            if (_belongsTo != null) { _belongsTo.Add(this); }
+        }
         protected virtual void FixedUpdate() { }
         protected virtual void Update() { }
         protected virtual void LateUpdate() { }
-        protected virtual void OnDisable() { }
-        protected virtual void OnDestroy()
+        protected virtual void OnDisable()
         {
             if (_belongsTo != null) { _belongsTo.Remove(this); }
-            allEntities[GetType()].Remove(this);
+        }
+        protected virtual void OnDestroy()
+        {
+            _allEntities[GetType()].Remove(this);
         }
 
         #endregion

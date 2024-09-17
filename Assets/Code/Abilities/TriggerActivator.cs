@@ -2,6 +2,7 @@ using System;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class TriggerActivator : AbilityActivator
@@ -29,27 +30,6 @@ public class TriggerActivator : AbilityActivator
         rightTriggerValue.action.performed -= RightAction_performed;
     }
 
-    //private void Update()
-    //{
-    //    //if (active)
-    //    //{
-    //    if (previewObject.HeldBy?.handedness == InteractorHandedness.None
-    //        &&
-    //        (
-    //        leftTriggerValue.action.ReadValue<float>() >= activationThreshold
-    //        || rightTriggerValue.action.ReadValue<float>() >= activationThreshold
-    //        ))
-    //    {
-    //        activationComplete?.Invoke();
-    //    }
-    //    else if (previewObject.HeldBy?.handedness == InteractorHandedness.Left && leftTriggerValue.action.ReadValue<float>() >= activationThreshold
-    //        || previewObject.HeldBy?.handedness == InteractorHandedness.Right && rightTriggerValue.action.ReadValue<float>() >= activationThreshold)
-    //    {
-    //        activationComplete?.Invoke();
-    //    }
-    //    //}
-    //}
-
     #endregion
 
 
@@ -57,26 +37,26 @@ public class TriggerActivator : AbilityActivator
 
     private void RightAction_performed(InputAction.CallbackContext obj)
     {
-        if (previewObject.HeldBy?.handedness == InteractorHandedness.Right)
+        if (previewObject.GetComponent<XRGrabInteractable>()?.GetNewestInteractorSelecting().handedness == InteractorHandedness.Right)
         {
             float value = obj.action.ReadValue<float>();
-            activationStatusChanged?.Invoke(value);
+            ActivationStatusChanged_Invoke(value);
             if (value >= activationThreshold)
             {
-                activationComplete?.Invoke();
+                ActivationComplete_Invoke();
             }
         }
     }
 
     private void LeftAction_performed(InputAction.CallbackContext obj)
     {
-        if (previewObject.HeldBy?.handedness == InteractorHandedness.Left)
+        if (previewObject.GetComponent<XRGrabInteractable>()?.GetNewestInteractorSelecting().handedness == InteractorHandedness.Left)
         {
             float value = obj.action.ReadValue<float>();
-            activationStatusChanged?.Invoke(value);
+            ActivationStatusChanged_Invoke(value);
             if (value >= activationThreshold)
             {
-                activationComplete?.Invoke();
+                ActivationComplete_Invoke();
             }
         }
     }

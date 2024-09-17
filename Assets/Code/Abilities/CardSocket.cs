@@ -1,7 +1,9 @@
-﻿using SolarStorm.UnityToolkit;
+﻿
+using SolarStorm.UnityToolkit;
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 [RequireComponent(typeof(Collider))]
@@ -13,7 +15,7 @@ public class CardSocket : MonoBehaviour
     /// </summary>
     [Tooltip("The distance, in meters, a card needs to be away from it's socket point before switching views")]
     [SerializeField] FloatRef transitionDistance = 0.2f;
-    [SerializeField] float transitionBuffer = 0.01f;
+    [SerializeField] float transitionBuffer = 0.05f;
     /// <summary>
     /// The time it takes for a card to make it back to the socket, in seconds
     /// </summary>
@@ -33,6 +35,7 @@ public class CardSocket : MonoBehaviour
                 abil.OnActiveItemReleased -= AttachedItemReleased;
             }
             abil = value;
+            cardGrab = abil.Card.GetComponent<XRGrabInteractable>();
             if (value != null)
             {
                 abil.OnActiveItemGrabbed += AttachedItemGrabbed;
@@ -41,6 +44,7 @@ public class CardSocket : MonoBehaviour
         }
     }
     private AbilityData abil;
+    private XRGrabInteractable cardGrab;
 
     // Animation cancellation vars
     private Awaitable _seatAnim;
@@ -60,7 +64,7 @@ public class CardSocket : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (abil.State == AbilityState.Card && abil.Card.HeldBy != null)
+        if (abil.State == AbilityState.Card && cardGrab.interactorsSelecting.Count > 0)
         {
             // If card gets pulled away from socket
             float cardDistFromSocket = Vector3.Distance(seatedPosition.position, AttachedAbility.Card.transform.position);
@@ -69,10 +73,15 @@ public class CardSocket : MonoBehaviour
                 AttachedAbility.ChangeState(AbilityState.Preview);
             }
         }
-        else if (abil.State == AbilityState.Preview && abil.Preview.HeldBy != null)
+        else if (abil.State == AbilityState.Preview && cardGrab.interactorsSelecting.Count > 0)
         {
             // If preview gets returned to socket
             float previewDistFromSocket = Vector3.Distance(seatedPosition.position, AttachedAbility.Preview.transform.position);
+            if(previewDistFromSocket < .3f)
+            {
+
+                Debug.Log("Preview is pretty close to transitioning!", this);
+            }
             if (previewDistFromSocket < transitionDistance - transitionBuffer)
             {
                 AttachedAbility.ChangeState(AbilityState.Card);
@@ -90,7 +99,7 @@ public class CardSocket : MonoBehaviour
             }
             else if (card != AttachedAbility.Card)
             {
-                Debug.LogWarning("Swapping card locations not yet implemented");
+                Debug.Log("Swapping card locations not yet implemented", this);
             }
         }
     }
@@ -180,6 +189,8 @@ public class CardSocket : MonoBehaviour
         {
             _seatAnimCTS.Cancel();
         }
+
+        Debug.Assert(ability != null);
 
         if (ability.State == AbilityState.Card)
         {

@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5207124421395757314}
   - component: {fileID: 1115656481128825762}
+  - component: {fileID: 7490362095518157664}
   m_Layer: 0
   m_Name: BaseProjectile
   m_TagString: Untagged
@@ -72,13 +73,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7267948366429429999}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9989965f0d4a002448b7d54821df152d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onHitAnimation: {fileID: 5576606780671760701, guid: 257c51ba5a8efa44e89ac33e2b89621e, type: 3}
   projectileSpeed: 15
+--- !u!114 &7490362095518157664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7267948366429429999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74900b8c23440ba4686813311dee5999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed:
+    useInstanced: 0
+    shared: {fileID: 0}
+    instanced: 0
+  _damage:
+    useInstanced: 0
+    shared: {fileID: 0}
+    instanced: 0
 --- !u!1001 &7017046300818057970
 PrefabInstance:
   m_ObjectHideFlags: 0

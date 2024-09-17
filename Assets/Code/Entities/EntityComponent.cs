@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace SolarStorm.Entities
 {
-    [RequireComponent(typeof(GameEntity))]
     public class EntityComponent : MonoBehaviour
     {
         protected GameEntity Entity { get; private set; }
@@ -12,7 +11,11 @@ namespace SolarStorm.Entities
 
         protected virtual void Awake()
         {
-            Entity = GetComponent<GameEntity>();
+            if (!TryGetComponent(out GameEntity entity))
+            {
+                throw new MissingComponentException("Entity components cannot work without a GameEntity!");
+            }
+            Entity = entity;
         }
 
         #endregion

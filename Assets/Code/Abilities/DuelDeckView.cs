@@ -1,3 +1,4 @@
+
 using SolarStorm.UnityToolkit;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -64,7 +65,7 @@ public class DuelDeckView : MonoBehaviour
         {
             if (_cardSockets.ContainsKey(ability))
             {
-                Debug.LogError($"Attempted to create duplicate socket for card {ability.name}");
+                Debug.LogError($"Attempted to create duplicate socket for card {ability.name}", this);
                 continue;
             }
 
@@ -85,7 +86,7 @@ public class DuelDeckView : MonoBehaviour
         {
             if (!_cardSockets.TryGetValue(ability, out CardSocket socket))
             {
-                Debug.LogError($"Attempted to remove nonexistant socket for card {ability.name}");
+                Debug.LogError($"Attempted to remove nonexistant socket for card {ability.name}", this);
                 continue;
             }
 
@@ -113,7 +114,7 @@ public class DuelDeckView : MonoBehaviour
 
             if (!SplineUtility.Evaluate(cardPath.Spline, t, out float3 pos, out float3 tangent, out float3 upVec))
             {
-                Debug.LogError("Duel Deck failed card path spline evaluation");
+                Debug.LogError("Duel Deck failed card path spline evaluation", this);
             }
 
 

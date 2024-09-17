@@ -3,6 +3,6 @@ using UnityEngine;
 
 namespace SolarStorm.Entities
 {
-    [CreateAssetMenu(menuName = "Shared Data/Game Entity Set")]
+    [CreateAssetMenu(menuName = "Shared Data/Collections/Game Entity Set")]
     public class GameEntityRuntimeSet : RuntimeSet<GameEntity> { }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b28ad6eaeb9b6054eb2178cfc08a6f7d
+guid: c95165d4f1b4b7d468a0d4948e409556
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 293351
   packageName: 3D Tower Defense VFX Pack
   packageVersion: 1.0
-  assetPath: Assets/3D Tower Defense VFX Pack/Towers, Projectiles & Enemies Prefabs/Towers/Animators/Tower-3-ShootAnimLeftBarrel.anim
+  assetPath: Assets/3D Tower Defense VFX Pack/Towers, Projectiles & Enemies Prefabs/Towers/Animators/Tower-3-ShootAnimRightBarrel.anim
   uploadId: 685123

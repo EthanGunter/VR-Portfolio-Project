@@ -1,11 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Preview))]
+[RequireComponent(typeof(DissolvingViewComponent))]
 public abstract class AbilityActivator : MonoBehaviour
 {
-    public UnityEvent activationComplete;
-    public UnityEvent<float> activationStatusChanged;
+    public event Action ActivationComplete;
+    public event Action<float> ActivationStatusChanged;
 
     //protected AbilityData ability;
     protected bool active;
@@ -13,21 +14,20 @@ public abstract class AbilityActivator : MonoBehaviour
     {
         get => _activationStatus; set
         {
-            if (_activationStatus != value) activationStatusChanged?.Invoke(value);
+            if (_activationStatus != value) ActivationStatusChanged?.Invoke(value);
             _activationStatus = value;
         }
     }
     private float _activationStatus;
 
-    protected Preview previewObject;
+    protected AbilityViewComponent previewObject;
 
 
     #region Unity Messages
 
     protected virtual void Awake()
     {
-        //ability.OnStateChange += HandleAbilityStateChange;
-        previewObject = GetComponent<Preview>();
+        previewObject = GetComponent<DissolvingViewComponent>();
     }
     protected virtual void OnEnable()
     {
@@ -36,10 +36,6 @@ public abstract class AbilityActivator : MonoBehaviour
     protected virtual void OnDisable()
     {
         StopActivationCheck();
-    }
-    protected virtual void OnDestroy()
-    {
-        //ability.OnStateChange -= HandleAbilityStateChange;
     }
 
     #endregion
@@ -51,18 +47,6 @@ public abstract class AbilityActivator : MonoBehaviour
         return _activationStatus;
     }
 
-    private void HandleAbilityStateChange(AbilityData ability)
-    {
-        if (ability.State == AbilityState.Card)
-        {
-            StopActivationCheck();
-        }
-        else if (ability.State == AbilityState.Preview)
-        {
-            StartActivationCheck();
-        }
-    }
-
     protected virtual void StartActivationCheck()
     {
         active = true;
@@ -70,5 +54,15 @@ public abstract class AbilityActivator : MonoBehaviour
     protected virtual void StopActivationCheck()
     {
         active = false;
+    }
+
+    protected void ActivationComplete_Invoke()
+    {
+        ActivationComplete?.Invoke();
+    }
+
+    protected virtual void ActivationStatusChanged_Invoke(float value)
+    {
+        ActivationStatusChanged?.Invoke(value);
     }
 }
