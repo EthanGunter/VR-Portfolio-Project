@@ -2,6 +2,7 @@ using SolarStorm.UnityToolkit;
 using System.Threading;
 using UnityEngine;
 
+
 public class DissolvingViewComponent : AbilityViewComponent
 {
     #region Variables
@@ -10,7 +11,7 @@ public class DissolvingViewComponent : AbilityViewComponent
     [SerializeField] protected Renderer[] renderers;
     [SerializeField] protected StringRef dissolvePropertyName = "_DissolveAmount";
 
-    [SerializeField] float _dissolveTime = 0.2f;
+    [SerializeField] FloatRef _dissolveTime = 0.2f;
 
     protected float DissolvePercent
     {
@@ -24,17 +25,24 @@ public class DissolvingViewComponent : AbilityViewComponent
                 foreach (var mat in renderer.materials)
                 {
                     mat.SetFloat(dissolvePropertyName, _dissolvePercent);
-                    mat.SetColor("_Color", Color.red);
                 }
             }
         }
     }
-    private float _dissolvePercent;
+    private float _dissolvePercent = 1;
 
     #endregion
 
 
     #region Unity Messages
+
+    protected virtual void Awake()
+    {
+        if (renderers.Length == 0)
+        {
+            renderers = GetComponentsInChildren<Renderer>();
+        }
+    }
 
     protected virtual void OnEnable()
     {
@@ -50,10 +58,14 @@ public class DissolvingViewComponent : AbilityViewComponent
 
     public async override Awaitable PlayShowAnimation(CancellationToken cancellationToken)
     {
-        Debug.Log("Preview IN - animation begin", this);
+        Debug.Log("Preview Show - animation begin", this);
         while (_dissolvePercent > 0)
         {
-            if (cancellationToken.IsCancellationRequested) break;
+            if (cancellationToken.IsCancellationRequested)
+            {
+                Debug.Log($"Preview Show - stopped early at {_dissolvePercent}", this);
+                break;
+            }
 
             _dissolvePercent -= Time.deltaTime / _dissolveTime;
             foreach (var rend in renderers)
@@ -62,20 +74,29 @@ public class DissolvingViewComponent : AbilityViewComponent
             }
             await Awaitable.EndOfFrameAsync();
         }
-        _dissolvePercent = 0;
-        foreach (var rend in renderers)
+
+        if (!cancellationToken.IsCancellationRequested)
         {
-            rend.material.SetFloat(dissolvePropertyName, _dissolvePercent);
+            Debug.Log($"Preview Show - stopped early at {_dissolvePercent}", this);
+            _dissolvePercent = 0;
+            foreach (var rend in renderers)
+            {
+                rend.material.SetFloat(dissolvePropertyName, _dissolvePercent);
+            }
         }
-        Debug.Log("Preview IN - animation completed", this);
+        Debug.Log("Preview Show - animation completed", this);
     }
 
     public async override Awaitable PlayHideAnimation(CancellationToken cancellationToken)
     {
-        Debug.Log("Preview OUT - animation begin", this);
+        Debug.Log("Preview Hide - animation begin", this);
         while (_dissolvePercent < 1)
         {
-            if (cancellationToken.IsCancellationRequested) break;
+            if (cancellationToken.IsCancellationRequested)
+            {
+                Debug.Log($"Preview Hide - stopped early at {_dissolvePercent}", this);
+                break;
+            }
 
             _dissolvePercent += Time.deltaTime / _dissolveTime;
             foreach (var rend in renderers)
@@ -84,26 +105,20 @@ public class DissolvingViewComponent : AbilityViewComponent
             }
             await Awaitable.EndOfFrameAsync();
         }
-        _dissolvePercent = 1;
-        foreach (var rend in renderers)
+        if (cancellationToken.IsCancellationRequested)
         {
-            rend.material.SetFloat(dissolvePropertyName, _dissolvePercent);
+            Debug.Log($"Preview Hide - stopped early at {_dissolvePercent}", this);
+            _dissolvePercent = 1;
+            foreach (var rend in renderers)
+            {
+                rend.material.SetFloat(dissolvePropertyName, _dissolvePercent);
+            }
         }
-        Debug.Log("Preview OUT - animation completed", this);
+        Debug.Log("Preview Hide - animation completed", this);
     }
 
     public virtual void OnActivationComplete()
     {
-
-        Debug.Log("Ability Activated!", this);
         Ability.ChangeState(AbilityState.Active);
-    }
-
-    protected void SetDissolveAmount(float percent)
-    {
-        foreach (var renderer in renderers)
-        {
-            renderer.material.SetFloat(dissolvePropertyName, percent);
-        }
     }
 }

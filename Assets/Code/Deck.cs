@@ -80,6 +80,34 @@ public class Deck<T> : ICardCollection<T>
         }
     }
 
+    /// <summary>
+    /// Draw cards from the deck with a condition
+    /// </summary>
+    /// <param name="predicate">The condition that filters what cards get returned</param>
+    /// <param name="count">The max number of cards to collect</param>
+    /// <returns>As many cards pass the condition, up to <c>count</c></returns>
+    public IEnumerable<T> DrawWhere(Func<T, bool> predicate, int count = 1)
+    {
+        List<T> foundCards = new();
+        for (int i = 0; i < _cards.Count; i++)
+        {
+            if (predicate(_cards[i]))
+            {
+                foundCards.Add(_cards[i]);
+            }
+            if (foundCards.Count == count)
+                break;
+        }
+
+        foreach (var card in foundCards)
+        {
+            _cards.Remove(card);
+        }
+
+        OnCardsRemoved?.Invoke(foundCards);
+        return foundCards;
+    }
+
     public void Shuffle()
     {
         int n = _cards.Count;

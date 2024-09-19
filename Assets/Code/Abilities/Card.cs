@@ -6,13 +6,16 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using SolarStorm.UnityToolkit;
+using System.IO;
 
 [RequireComponent(typeof(XRGrabInteractable))]
 public class Card : AbilityViewComponent
 {
     #region Variables
 
+    [SerializeField] TextMeshProUGUI _nameText;
     [SerializeField] TextMeshProUGUI _text;
+    [SerializeField] TextMeshProUGUI _activeText;
     [SerializeField] Renderer[] _renderers;
     [Header("Dissolve FX")]
     [SerializeField] StringRef _dissolvePropertyName = "_DissolveAmount";
@@ -42,12 +45,22 @@ public class Card : AbilityViewComponent
             }
         }
     }
-    private float _dissolvePercent;
+    private float _dissolvePercent = 1;
 
     private XRGrabInteractable _grab;
     private Color _initColor;
 
     #endregion
+
+    string _rand = Path.GetRandomFileName().Substring(0, 2); // TEMP
+    // "Constructor"
+    public override void InitializeAbilityData(AbilityData ability)
+    {
+        base.InitializeAbilityData(ability);
+        Ability.OnStateChange += Ability_OnStateChangeBegin;
+        name = Ability.AbilityName + " " + _rand;
+        _nameText.text = name;
+    }
 
 
     #region Unity Messages
@@ -56,10 +69,8 @@ public class Card : AbilityViewComponent
     {
         _grab = GetComponent<XRGrabInteractable>();
         _initColor = _renderers[0].material.GetColor(_emissionColorPropertyName);
-    }
-    protected virtual void Start()
-    {
-        _text.text = Text;
+        _activeText.gameObject.SetActive(false);
+        _text.gameObject.SetActive(false);
     }
 
     protected virtual void OnEnable()
@@ -76,43 +87,58 @@ public class Card : AbilityViewComponent
         _grab.firstSelectEntered.RemoveListener(Select);
         _grab.lastSelectExited.RemoveListener(SelectExit);
     }
+    private void OnDestroy()
+    {
+        Ability.OnStateChange -= Ability_OnStateChangeBegin;
+    }
 
     #endregion
 
 
     #region Event Handlers
 
-    public void HoverEnter(HoverEnterEventArgs args)
+    private void HoverEnter(HoverEnterEventArgs args)
     {
         SetEmissionColor(_hoverColor);
     }
-    public void HoverExit(HoverExitEventArgs args)
+    private void HoverExit(HoverExitEventArgs args)
     {
         if (!_grab.isSelected)
         {
             SetEmissionColor(_initColor);
         }
     }
-    public void Select(SelectEnterEventArgs args)
+    private void Select(SelectEnterEventArgs args)
     {
         SetEmissionColor(_selectColor);
     }
-    public void SelectExit(SelectExitEventArgs args)
+    private void SelectExit(SelectExitEventArgs args)
     {
         SetEmissionColor(_initColor);
+    }
+
+    private void Ability_OnStateChangeBegin(AbilityData obj)
+    {
+        _activeText.gameObject.SetActive(true);
+        _activeText.text = Ability.State.ToString();
+        //if (Ability.State == AbilityState.Active)
+        //{
+        //    _activeText.gameObject.SetActive(true);
+        //}
+        //else
+        //{
+        //    _activeText.gameObject.SetActive(false);
+        //}
     }
 
     #endregion
 
 
-
     public async override Awaitable PlayShowAnimation(CancellationToken cancellationToken)
     {
-        Debug.Log("Card IN - animation begin", this);
-        while (_dissolvePercent > 0)
+        //Debug.Log("Card Show - animation begin", this);
+        while (_dissolvePercent > 0 && !cancellationToken.IsCancellationRequested)
         {
-            if (cancellationToken.IsCancellationRequested) break;
-
             _dissolvePercent -= Time.deltaTime / _dissolveTime;
             foreach (var rend in _renderers)
             {
@@ -120,20 +146,23 @@ public class Card : AbilityViewComponent
             }
             await Awaitable.EndOfFrameAsync();
         }
-        _dissolvePercent = 0;
-        foreach (var rend in _renderers)
+
+        if (!cancellationToken.IsCancellationRequested)
         {
-            rend.material.SetFloat(_dissolvePropertyName, _dissolvePercent);
+            _dissolvePercent = 0;
+            foreach (var rend in _renderers)
+            {
+                rend.material.SetFloat(_dissolvePropertyName, _dissolvePercent);
+            }
         }
-        Debug.Log("Card IN - animation complete", this);
+        //Debug.Log("Card Show - animation complete", this);
     }
 
     public async override Awaitable PlayHideAnimation(CancellationToken cancellationToken)
     {
-        Debug.Log("Card OUT - animation begin", this);
-        while (_dissolvePercent < 1)
+        //Debug.Log("Card Hide - animation begin", this);
+        while (_dissolvePercent < 1 && !cancellationToken.IsCancellationRequested)
         {
-            if (cancellationToken.IsCancellationRequested) break;
 
             _dissolvePercent += Time.deltaTime / _dissolveTime;
             foreach (var rend in _renderers)
@@ -142,12 +171,16 @@ public class Card : AbilityViewComponent
             }
             await Awaitable.EndOfFrameAsync();
         }
-        _dissolvePercent = 1;
-        foreach (var rend in _renderers)
+
+        if (!cancellationToken.IsCancellationRequested)
         {
-            rend.material.SetFloat(_dissolvePropertyName, _dissolvePercent);
+            _dissolvePercent = 1;
+            foreach (var rend in _renderers)
+            {
+                rend.material.SetFloat(_dissolvePropertyName, _dissolvePercent);
+            }
         }
-        Debug.Log("Card OUT - animation complete", this);
+        //Debug.Log("Card Hide - animation complete", this);
     }
 
 

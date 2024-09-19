@@ -95,8 +95,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 663453928098069695}
-  - component: {fileID: 6900354901478326188}
   - component: {fileID: 4616006677720358517}
+  - component: {fileID: 3124201087929961921}
   m_Layer: 0
   m_Name: Socket
   m_TagString: Untagged
@@ -120,27 +120,6 @@ Transform:
   - {fileID: 2574036361223121442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6900354901478326188
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3533058393516843609}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.065, y: 0.082767434, z: 0.02}
-  m_Center: {x: 0, y: 0.041044276, z: 0}
 --- !u!114 &4616006677720358517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,12 +133,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seatedPosition: {fileID: 0}
-  transitionDistance:
-    useInstanced: 1
-    shared: {fileID: 0}
-    instanced: 0.2
-  _cardSeatTime:
+  previewActivationBarrier: {fileID: 3124201087929961921}
+  cardSeatTime:
     useInstanced: 1
     shared: {fileID: 0}
     instanced: 0.5
   easingFunction: 6
+--- !u!135 &3124201087929961921
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533058393516843609}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.07
+  m_Center: {x: 0, y: 0.04, z: 0}

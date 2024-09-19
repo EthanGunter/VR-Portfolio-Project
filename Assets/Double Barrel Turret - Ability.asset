@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cdffaefbf836c344a9e87e6316d36ac, type: 3}
   m_Name: Double Barrel Turret - Ability
   m_EditorClassIdentifier: 
+  <AbilityName>k__BackingField: Double Barrel Turret
   _cardPrefab: {fileID: 3440645864111368274, guid: 35286ffda6740e8479ee8ffebf2dc148, type: 3}
   _previewPrefab: {fileID: 0}
   _entityPrefab: {fileID: 3997688981379862317, guid: afc19ef1649832b4094bcd97119d16a1, type: 3}

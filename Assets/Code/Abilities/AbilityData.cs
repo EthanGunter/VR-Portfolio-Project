@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
@@ -14,8 +18,11 @@ public delegate void AbilitySelectEvent(AbilityData ability, IXRSelectInteractor
 [CreateAssetMenu(menuName = "Abilities/Ability")]
 public class AbilityData : ScriptableObject
 {
+    string id = Path.GetRandomFileName().Substring(0, 4);
+
     #region Compile-time Inspector fields
 
+    [field: SerializeField] public string AbilityName { get; private set; }
     [SerializeField] private Card _cardPrefab;
     [SerializeField] private AbilityViewComponent _previewPrefab;
     [SerializeField] private AbilityViewComponent _entityPrefab;
@@ -25,6 +32,7 @@ public class AbilityData : ScriptableObject
 
     #region Runtime Variables
 
+    public event Action<AbilityData> OnStateChangeBegin;
     public event Action<AbilityData> OnStateChange;
     public event AbilitySelectEvent OnActiveItemGrabbed;
     public event AbilitySelectEvent OnActiveItemReleased;
@@ -37,13 +45,14 @@ public class AbilityData : ScriptableObject
             {
                 _card = Instantiate(_cardPrefab);
                 _card.InitializeAbilityData(this);
+                _card.gameObject.SetActive(false);
+                _card.name = _card.Text;
             }
             return _card;
         }
         private set { _card = value; }
     }
     private Card _card;
-    private CancellationTokenSource _cardAnimation;
     public AbilityViewComponent Preview
     {
         get
@@ -52,13 +61,14 @@ public class AbilityData : ScriptableObject
             {
                 _preview = Instantiate(_previewPrefab);
                 _preview.InitializeAbilityData(this);
+                _preview.gameObject.SetActive(false);
+                _preview.name = Card.Text;
             }
             return _preview;
         }
         private set { _preview = value; }
     }
     private AbilityViewComponent _preview;
-    private CancellationTokenSource _previewAnimation;
     public AbilityViewComponent EntityView
     {
         get
@@ -66,13 +76,15 @@ public class AbilityData : ScriptableObject
             if (_entity == null)
             {
                 _entity = Instantiate(_entityPrefab);
+                _entity.InitializeAbilityData(this);
+                _entity.gameObject.SetActive(false);
+                _entity.name = Card.Text;
             }
             return _entity;
         }
         private set { _entity = value; }
     }
     private AbilityViewComponent _entity;
-    private CancellationTokenSource _entityViewAnimation;
 
     public AbilityState State
     {
@@ -82,133 +94,143 @@ public class AbilityData : ScriptableObject
             if (_state != value)
             {
                 _state = value;
-                OnStateChange?.Invoke(this);
             }
         }
     }
-    private AbilityState _state = AbilityState.Card;
+    private AbilityState _state;
+
+    //private AsyncAnimator _animator = new();
 
     #endregion
 
-
-    // Card <-> Preview -> Active ?-> Card
-    public async Awaitable ChangeState(AbilityState state)
-    {
-        if (State == state)
-        {
-            return;
-        }
-
-        State = state;
-
-        if (state == AbilityState.Card) // Could be transitioning from Preview or Consumed state
-        {            
-            // TODO Check if we're coming from consumed state...
-
-            XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
-            XRGrabInteractable cardGrab = Card.GetComponent<XRGrabInteractable>();
-
-            // Stop listening to the preview's grab/release events
-            previewGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
-            previewGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
-            Debug.Log("Stopped listening to card grab/release", cardGrab);
-
-            // Force the card into the player's hand, and listen for its grab/release events
-
-            cardGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), cardGrab);
-            cardGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
-            cardGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
-            Debug.Log("Listening to card grab/release", cardGrab);
-
-
-            Awaitable hidePreviewAnim = Preview.PlayHideAnimation(RefreshAnimationToken(ref _previewAnimation));
-            await hidePreviewAnim;
-            Preview.Hide();
-
-
-            Card.Show();
-            await Card.PlayShowAnimation(RefreshAnimationToken(ref _cardAnimation));
-        }
-        else if (state == AbilityState.Preview) // Can only transition to Preview from Card
-        {
-            XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
-            XRGrabInteractable cardGrab = Card.GetComponent<XRGrabInteractable>();
-
-            // Stop listening to the cards's grab/release events
-            cardGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
-            cardGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
-            Debug.Log("Stopped listening to card grab/release", cardGrab);
-
-            // Force the preview into the player's hand, and listen for its grab/release events
-            previewGrab.interactionManager.SelectEnter(cardGrab.GetNewestInteractorSelecting(), previewGrab);
-            previewGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
-            previewGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
-            Debug.Log("Listening to preview grab/release", cardGrab);
-
-            await Card.PlayHideAnimation(RefreshAnimationToken(ref _cardAnimation));
-            Card.Hide();
-
-            Preview.Show();
-            await Preview.PlayShowAnimation(RefreshAnimationToken(ref _previewAnimation));
-        }
-        else if (state == AbilityState.Active) // Can only transition to Active from Preview
-        {
-            XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
-
-            // Stop listening to the preview's grab/release events
-            previewGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
-            previewGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
-
-            // If the active item is grabbable
-            if (EntityView.TryGetComponent(out XRGrabInteractable activeGrab))
-            {
-                // Force it into the player's hand, and listen for its grab/release events
-                activeGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), activeGrab);
-                activeGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
-                activeGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
-            }
-
-            await Preview.PlayHideAnimation(RefreshAnimationToken(ref _previewAnimation));
-            Preview.Hide();
-
-            EntityView.Show();
-            await EntityView.PlayShowAnimation(RefreshAnimationToken(ref _entityViewAnimation));
-        }
-        else if (state == AbilityState.Consumed) // Can only transition to Consumed from Active
-        {
-            Destroy(Card);
-            Destroy(Preview);
-
-            // If the active item is grabbable
-            if (EntityView.TryGetComponent(out XRGrabInteractable activeGrab))
-            {
-                // Stop listening to its grab/release events
-                activeGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
-                activeGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
-            }
-
-            await EntityView.PlayHideAnimation(RefreshAnimationToken(ref _entityViewAnimation));
-            Destroy(EntityView);
-        }
-
-    }
-
     /// <summary>
-    /// Stops an existing animation task if it is running, then creates and returns a new animation token
+    /// Changes the ability to one of <see cref="AbilityState"/>, and (should) performs an awaitable transition animation
     /// </summary>
-    /// <param name="animationTokenSource"></param>
-    /// <returns></returns>
-    private CancellationToken RefreshAnimationToken(ref CancellationTokenSource animationTokenSource)
+    // Card <-> Preview -> Active ?-> Card
+    public async Awaitable ChangeState(AbilityState newState)
     {
-        if (animationTokenSource != null)
+        try
         {
-            animationTokenSource.Cancel();
-            animationTokenSource.Dispose();
-        }
+            if (State == newState) return;
 
-        animationTokenSource = new CancellationTokenSource();
-        return animationTokenSource.Token;
+            //Debug.Log($"{id} changing: {_state}->{newState}", this);
+
+            try { OnStateChangeBegin?.Invoke(this); } catch (Exception e) { Debug.LogException(e); }
+
+            AbilityState oldState = State;
+            State = newState;
+
+            if (newState == AbilityState.Card && oldState == AbilityState.Consumed)
+            {
+                // Card birth
+                XRGrabInteractable cardGrab = Card.GetComponent<XRGrabInteractable>();
+                cardGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
+                cardGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
+
+                Card.Show();
+            }
+            else if (newState == AbilityState.Card && oldState == AbilityState.Preview)
+            {
+                // Preview -> Card
+
+                XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
+                XRGrabInteractable cardGrab = Card.GetComponent<XRGrabInteractable>();
+
+                // Stop listening to the preview's grab/release events
+                previewGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
+                previewGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
+
+                // Force the card into the player's hand
+                cardGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), cardGrab);
+
+                // Then listen for its grab/release events
+                cardGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
+                cardGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
+
+                // TODO
+                // Run the actual animations
+                Card.Show();
+                Preview.Hide();
+            }
+            else if (newState == AbilityState.Preview)
+            {
+                // Card -> Preview
+                if (oldState != AbilityState.Card) { throw new InvalidOperationException($"{AbilityName} attempted to enter Preview state from {newState}. Should be in Card state."); }
+
+                XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
+                XRGrabInteractable cardGrab = Card.GetComponent<XRGrabInteractable>();
+
+                // Stop listening to the cards's grab/release events
+                cardGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
+                cardGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
+
+                // Force the preview into the player's hand
+                previewGrab.interactionManager.SelectEnter(cardGrab.GetNewestInteractorSelecting(), previewGrab);
+
+                // Then listen for its grab/release events
+                previewGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
+                previewGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
+
+                // TODO
+                // Run the actual animations
+                Preview.Show();
+                Card.Hide();
+            }
+            else if (newState == AbilityState.Active)
+            {
+                // Preview -> Active
+                if (oldState != AbilityState.Preview) { throw new InvalidOperationException($"{AbilityName} attempted to enter Active state from {newState}. Should be in Preview state."); }
+
+                XRGrabInteractable previewGrab = Preview.GetComponent<XRGrabInteractable>();
+
+                // Stop listening to the preview's grab/release events
+                previewGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
+                previewGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
+
+                // If the active item is grabbable
+                if (EntityView.TryGetComponent(out XRGrabInteractable activeGrab))
+                {
+                    // Force it into the player's hand
+                    activeGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), activeGrab);
+
+                    // Then listen for its grab/release events
+                    activeGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
+                    activeGrab.lastSelectExited.AddListener(ForwardItemReleasedEvent);
+                }
+
+                // TODO
+                // Run the actual animations
+                EntityView.Show();
+                Destroy(Preview.gameObject);
+                //Destroy(Card.gameObject);
+            }
+            else if (newState == AbilityState.Consumed)
+            {
+                // Active -> Consumed
+                if (oldState != AbilityState.Active) { throw new InvalidOperationException($"{AbilityName} attempted to enter consumed state from {newState}. Should be in Active state."); }
+
+                if (EntityView.TryGetComponent(out XRGrabInteractable activeGrab))
+                {
+                    // If the active item is grabbable
+                    // Stop listening to its grab/release events
+                    activeGrab.firstSelectEntered.RemoveListener(ForwardItemGrabbedEvent);
+                    activeGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
+                }
+
+                EntityView.Hide();
+                Destroy(EntityView.gameObject);
+            }
+
+            //Debug.Log($"{id} changed: {oldState}->{newState}", this);
+
+            try { OnStateChange?.Invoke(this); } catch (Exception e) { Debug.LogException(e); }
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
     }
+
 
     private void ForwardItemGrabbedEvent(SelectEnterEventArgs args)
     {

@@ -71,8 +71,6 @@ public class DuelDeckView : MonoBehaviour
 
             CardSocket socket = _socketPool.Get();
 
-            ability.ChangeState(AbilityState.Card);
-
             _cardSockets.Add(ability, socket);
             _socketTransformHolds.Add(socket, new PosRot());
 
@@ -136,6 +134,7 @@ public class DuelDeckView : MonoBehaviour
         }
     }
 
+
     #region Socket Pool
 
     /// <summary>
@@ -172,6 +171,7 @@ public class DuelDeckView : MonoBehaviour
     }
 
     #endregion
+
 
     private class PosRot
     {

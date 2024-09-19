@@ -9,7 +9,7 @@ public abstract class AbilityActivator : MonoBehaviour
     public event Action<float> ActivationStatusChanged;
 
     //protected AbilityData ability;
-    protected bool active;
+    public bool IsChecking { get; private set; }
     protected float ActivationStatus
     {
         get => _activationStatus; set
@@ -49,15 +49,16 @@ public abstract class AbilityActivator : MonoBehaviour
 
     protected virtual void StartActivationCheck()
     {
-        active = true;
+        IsChecking = true;
     }
     protected virtual void StopActivationCheck()
     {
-        active = false;
+        IsChecking = false;
     }
 
     protected void ActivationComplete_Invoke()
     {
+        IsChecking = false;
         ActivationComplete?.Invoke();
     }
 
