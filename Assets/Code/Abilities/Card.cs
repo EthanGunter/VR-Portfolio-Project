@@ -134,9 +134,10 @@ public class Card : AbilityViewComponent
     #endregion
 
 
-    public async override Awaitable PlayShowAnimation(CancellationToken cancellationToken)
+    public async override Awaitable ShowAsync(CancellationToken cancellationToken)
     {
         //Debug.Log("Card Show - animation begin", this);
+        gameObject.SetActive(true);
         while (_dissolvePercent > 0 && !cancellationToken.IsCancellationRequested)
         {
             _dissolvePercent -= Time.deltaTime / _dissolveTime;
@@ -158,7 +159,7 @@ public class Card : AbilityViewComponent
         //Debug.Log("Card Show - animation complete", this);
     }
 
-    public async override Awaitable PlayHideAnimation(CancellationToken cancellationToken)
+    public async override Awaitable HideAsync(CancellationToken cancellationToken)
     {
         //Debug.Log("Card Hide - animation begin", this);
         while (_dissolvePercent < 1 && !cancellationToken.IsCancellationRequested)
@@ -179,6 +180,7 @@ public class Card : AbilityViewComponent
             {
                 rend.material.SetFloat(_dissolvePropertyName, _dissolvePercent);
             }
+            gameObject.SetActive(false);
         }
         //Debug.Log("Card Hide - animation complete", this);
     }

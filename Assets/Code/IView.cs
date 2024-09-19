@@ -7,13 +7,13 @@ public interface IView
     /// </summary>
     void Show();
     /// <summary>
-    /// Plays an animation that smoothly transitions from invisible to active
+    /// Plays an animation that smoothly transitions from invisible to visible
     /// </summary>
-    UnityEngine.Awaitable PlayShowAnimation(CancellationToken cancellationToken = default);
+    UnityEngine.Awaitable ShowAsync(CancellationToken cancellationToken = default);
     /// <summary>
-    /// Plays an animation that smoothly transitions from inactive to invisible
+    /// Plays an animation that smoothly transitions from visible to invisible
     /// </summary>
-    UnityEngine.Awaitable PlayHideAnimation(CancellationToken cancellationToken = default);
+    UnityEngine.Awaitable HideAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Makes the <see cref="IView"/> invisible

@@ -201,7 +201,7 @@ namespace SolarStorm.Entities
 
         private async void ReleaseProjectile(Projectile projectile)
         {
-            await projectile.PlayHideAnimation();
+            await projectile.HideAsync();
             projectile.Hide();
         }
 

@@ -56,9 +56,10 @@ public class DissolvingViewComponent : AbilityViewComponent
     #endregion
 
 
-    public async override Awaitable PlayShowAnimation(CancellationToken cancellationToken)
+    public async override Awaitable ShowAsync(CancellationToken cancellationToken)
     {
         Debug.Log("Preview Show - animation begin", this);
+        gameObject.SetActive(true);
         while (_dissolvePercent > 0)
         {
             if (cancellationToken.IsCancellationRequested)
@@ -87,7 +88,7 @@ public class DissolvingViewComponent : AbilityViewComponent
         Debug.Log("Preview Show - animation completed", this);
     }
 
-    public async override Awaitable PlayHideAnimation(CancellationToken cancellationToken)
+    public async override Awaitable HideAsync(CancellationToken cancellationToken)
     {
         Debug.Log("Preview Hide - animation begin", this);
         while (_dissolvePercent < 1)
@@ -113,6 +114,7 @@ public class DissolvingViewComponent : AbilityViewComponent
             {
                 rend.material.SetFloat(dissolvePropertyName, _dissolvePercent);
             }
+            gameObject.SetActive(false);
         }
         Debug.Log("Preview Hide - animation completed", this);
     }

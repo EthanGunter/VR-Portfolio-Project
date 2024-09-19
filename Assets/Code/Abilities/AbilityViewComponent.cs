@@ -39,9 +39,9 @@ public class AbilityViewComponent : MonoBehaviour, IView, IAbilityComponent
         gameObject.SetActive(true);
     }
 
-    public async virtual Awaitable PlayShowAnimation(CancellationToken cancellationToken) { }
+    public async virtual Awaitable ShowAsync(CancellationToken cancellationToken) { }
 
-    public async virtual Awaitable PlayHideAnimation(CancellationToken cancellationToken) { }
+    public async virtual Awaitable HideAsync(CancellationToken cancellationToken) { }
 
     /// <summary>
     /// <inheritdoc/>

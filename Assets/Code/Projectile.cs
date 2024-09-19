@@ -60,11 +60,11 @@ public class Projectile : MonoBehaviour, IView
         gameObject.SetActive(false);
     }
 
-    public async Awaitable PlayHideAnimation(CancellationToken cancellationToken = default)
+    public async Awaitable HideAsync(CancellationToken cancellationToken = default)
     {
     }
 
-    public async Awaitable PlayShowAnimation(CancellationToken cancellationToken = default)
+    public async Awaitable ShowAsync(CancellationToken cancellationToken = default)
     {
     }
 
