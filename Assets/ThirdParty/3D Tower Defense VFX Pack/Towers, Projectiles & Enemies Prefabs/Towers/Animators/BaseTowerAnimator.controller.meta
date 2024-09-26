@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9ddf74bb73f1cfb4995fb509e6d922ca
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/Towers, Projectiles & Enemies Prefabs/Towers/Animators/BaseTowerAnimator.controller
+  uploadId: 685123

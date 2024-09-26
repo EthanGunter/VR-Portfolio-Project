@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89d79203d36b871469527da08d0b04c6, type: 3}
+  m_Name: SFX_CardGrabs
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: b03be8797a0ef75419d30479c89c2153, type: 3}
+  - {fileID: 8300000, guid: e049e9460543bbb428dbf9f15873ed4c, type: 3}
+  - {fileID: 8300000, guid: 5cf292b2531756b499a5515279fff828, type: 3}
+  - {fileID: 8300000, guid: 1c28f8f2185bdf04996e8e6fabf396f8, type: 3}
+  - {fileID: 8300000, guid: 417f1b591c893ed4bb4500285332d178, type: 3}
+  - {fileID: 8300000, guid: c9c9872185c9ee14b8700699f2a7ec0f, type: 3}
+  - {fileID: 8300000, guid: 9f26a07a05aca26428fd1b1a30a73d61, type: 3}
+  - {fileID: 8300000, guid: b4aa82f44ef5dfd499a0f5048af36179, type: 3}
+  - {fileID: 8300000, guid: 245169c51281695489d83e171bf51d9e, type: 3}
+  - {fileID: 8300000, guid: ce85cf6e364961c4faec7a24200792d6, type: 3}
+  - {fileID: 8300000, guid: d2e270817f2dbd64fb7a4aeb2b2774a6, type: 3}
+  - {fileID: 8300000, guid: 50fdafe9559a7f14e92026e9fcf4f1ee, type: 3}

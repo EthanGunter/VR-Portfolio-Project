@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 61409f75a178b6d47821f6f875844622
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 22100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/Towers, Projectiles & Enemies Prefabs/Towers/Animators/Tower-5-Override-Animator.overrideController
+  uploadId: 685123

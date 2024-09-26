@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7ba09791e2b166849babf6658212b8d4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ShaderGraph/TrailRendererEmmisive/TrailPrefabs/LightingNotMoving.prefab
+  uploadId: 685123

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fb0a5e57862f780449edd587d2c446d5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ShaderGraph/ParticleEmissionUnlit/LaserTrailMat.mat
+  uploadId: 685123

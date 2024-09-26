@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b398e53b9cecf7740ab3f69d31d9dc41
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ParticleSystemPrefabs/Explosion-Blue.prefab
+  uploadId: 685123

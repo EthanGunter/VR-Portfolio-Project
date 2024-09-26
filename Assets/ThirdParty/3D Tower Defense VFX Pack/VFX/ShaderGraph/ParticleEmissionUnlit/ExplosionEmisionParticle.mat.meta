@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9650b25397359824ba8e0f7b7f10405c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 293351
+  packageName: 3D Tower Defense VFX Pack
+  packageVersion: 1.0
+  assetPath: Assets/3D Tower Defense VFX Pack/VFX/ShaderGraph/ParticleEmissionUnlit/ExplosionEmisionParticle.mat
+  uploadId: 685123
