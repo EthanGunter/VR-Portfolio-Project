@@ -107,7 +107,7 @@ public class AbilityData : ScriptableObject
     /// Changes the ability to one of <see cref="AbilityState"/>, and (should) performs an awaitable transition animation
     /// </summary>
     // Card <-> Preview -> Active ?-> Card
-    public async Awaitable ChangeState(AbilityState newState)
+    public async Awaitable ChangeState(AbilityState newState, IXRSelectInteractor forceToHand = null)
     {
         try
         {
@@ -141,7 +141,12 @@ public class AbilityData : ScriptableObject
                 previewGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
 
                 // Force the card into the player's hand
-                cardGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), cardGrab);
+                if (forceToHand != null) cardGrab.interactionManager.SelectEnter(forceToHand, cardGrab);
+                else if (previewGrab.GetNewestInteractorSelecting() != null) cardGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), cardGrab);
+                else // The card needs to go back home
+                {
+                    cardGrab.lastSelectExited.Invoke(new SelectExitEventArgs() { interactableObject = cardGrab });
+                }
 
                 // Then listen for its grab/release events
                 cardGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
@@ -165,7 +170,8 @@ public class AbilityData : ScriptableObject
                 cardGrab.lastSelectExited.RemoveListener(ForwardItemReleasedEvent);
 
                 // Force the preview into the player's hand
-                previewGrab.interactionManager.SelectEnter(cardGrab.GetNewestInteractorSelecting(), previewGrab);
+                if (forceToHand != null) previewGrab.interactionManager.SelectEnter(forceToHand, previewGrab);
+                else if (cardGrab.GetNewestInteractorSelecting() != null) previewGrab.interactionManager.SelectEnter(cardGrab.GetNewestInteractorSelecting(), previewGrab);
 
                 // Then listen for its grab/release events
                 previewGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);
@@ -191,7 +197,8 @@ public class AbilityData : ScriptableObject
                 if (EntityView.TryGetComponent(out XRGrabInteractable activeGrab))
                 {
                     // Force it into the player's hand
-                    activeGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), activeGrab);
+                    if (forceToHand != null) activeGrab.interactionManager.SelectEnter(forceToHand, activeGrab);
+                    else if (previewGrab.GetNewestInteractorSelecting() != null) activeGrab.interactionManager.SelectEnter(previewGrab.GetNewestInteractorSelecting(), activeGrab);
 
                     // Then listen for its grab/release events
                     activeGrab.firstSelectEntered.AddListener(ForwardItemGrabbedEvent);

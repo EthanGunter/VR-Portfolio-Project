@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using SolarStorm.UnityToolkit;
 using System.IO;
+using System.Linq;
 
 [RequireComponent(typeof(XRGrabInteractable))]
 public class Card : AbilityViewComponent
@@ -68,7 +69,11 @@ public class Card : AbilityViewComponent
     protected virtual void Awake()
     {
         _grab = GetComponent<XRGrabInteractable>();
-        _initColor = _renderers[0].material.GetColor(_emissionColorPropertyName);
+        if (_renderers.Length == 0)
+        {
+            _renderers = GetComponentsInChildren<Renderer>();
+        }
+            _initColor = _renderers[0].material.GetColor(_emissionColorPropertyName);
         _activeText.gameObject.SetActive(false);
         _text.gameObject.SetActive(false);
     }

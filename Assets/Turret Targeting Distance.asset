@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b573859f74d9e541ab365807f366608, type: 3}
   m_Name: Turret Targeting Distance
   m_EditorClassIdentifier: 
-  Value: 20
+  Value: 6

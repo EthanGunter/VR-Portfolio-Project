@@ -91,8 +91,8 @@ namespace SolarStorm.Entities
         public void SetTarget(GameEntity target)
         {
             Target = target;
-
         }
+
         public void LevelUp()
         {
             Level = Mathf.Min(Level + 1, levelData.Length - 1);

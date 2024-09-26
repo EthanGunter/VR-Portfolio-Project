@@ -19,7 +19,7 @@ public class AbilityViewComponent : MonoBehaviour, IView, IAbilityComponent
         {
             foreach (var abComp in abComps)
             {
-                if(abComp == this) continue;
+                if (abComp == this) continue;
                 abComp.InitializeAbilityData(ability);
             }
         }
@@ -53,4 +53,10 @@ public class AbilityViewComponent : MonoBehaviour, IView, IAbilityComponent
     }
 
     #endregion
+
+
+    public void ConsumeAbility()
+    {
+        Ability.ChangeState(AbilityState.Consumed);
+    }
 }

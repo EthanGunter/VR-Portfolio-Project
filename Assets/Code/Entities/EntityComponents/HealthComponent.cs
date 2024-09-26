@@ -3,19 +3,37 @@ using SolarStorm.Modifiers;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using UnityEngine.InputSystem.iOS;
 
 namespace SolarStorm.Entities
 {
     public class HealthComponent : EntityComponent
     {
+        [SerializeField] UnityEvent EntityKilled;
+        public event Action OnKilled;
+        void InvokeKilled() { OnKilled?.Invoke(); EntityKilled.Invoke(); }
+
         public event Action<float> OnDamaged;
         public event Action<float> OnHealed;
-        public event Action OnKilled;
 
         [field: SerializeField] public FloatRef MaxHealth { get; private set; } = 100;
-        [field: SerializeField] public float Health { get; protected set; }
+        [field: SerializeField]
+        public float Health
+        {
+            get => _health;
+            protected set
+            {
+                _health = value;
+                if (IsAlive && value <= 0)
+                {
+                    IsAlive = false;
+                    InvokeKilled();
+                }
+            }
+        }
+        private float _health;
+        public bool IsAlive { get; protected set; } = true;
 
-        public bool Dead;
 
         private readonly ModifierStack<float> damageModifiers = new();
 
@@ -42,13 +60,9 @@ namespace SolarStorm.Entities
         {
             damage.Target = Entity;
             damageModifiers.Apply(damage);
+
             Health -= damage.Value;
             OnDamaged?.Invoke(damage.Value);
-            if (!Dead && Health <= 0)
-            {
-                Dead = true;
-                OnKilled?.Invoke();
-            }
         }
     }
 

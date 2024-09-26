@@ -102,6 +102,11 @@ public class DuelDeck : MonoBehaviour
         if (ability.State == AbilityState.Active)
         {
             Hand.Remove(ability);
+
+            if (Hand.Count == 0)
+            {
+                Draw(handSize);
+            }
         }
         else if (ability.State == AbilityState.Consumed)
         {
