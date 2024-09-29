@@ -42,7 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5024251142148115053}
   - component: {fileID: 6601769117460072290}
-  - component: {fileID: 3213918724830855759}
+  - component: {fileID: 3983744909626942503}
+  - component: {fileID: 7270245118866468193}
   m_Layer: 0
   m_Name: Tower-Prefab-Base
   m_TagString: Untagged
@@ -68,7 +69,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6601769117460072290
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -82,12 +83,13 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3213918724830855759
+--- !u!114 &3983744909626942503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,19 +98,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 3294891927239499837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc35f417be6ec64ea4eb1524ee06415, type: 3}
+  m_Script: {fileID: 11500000, guid: dd48d9304469da047805af65d424be1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  porjectileSpawnPoints: []
-  shootCooldown: 1.5
-  projectilePrefab: {fileID: 0}
-  onShootParticleSystem: {fileID: 0}
-  towerAnimator: {fileID: 6601769117460072290}
+  _towerAnimator: {fileID: 6601769117460072290}
+  _shootAnimationTriggerNames:
+  - ShootLeft
+  - ShootRight
+--- !u!114 &7270245118866468193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294891927239499837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d10b31a6ee0914fbf5df0895299280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Level>k__BackingField: 0
+  levelData:
+  - {fileID: 11400000, guid: 2270ce125ade55c469ca495cac105231, type: 2}
+  - {fileID: 11400000, guid: 71f9e4fa7ce76564ab307aad1505cb17, type: 2}
+  - {fileID: 11400000, guid: dac2387be63e3ba40bb6fbdda2433732, type: 2}
+  - {fileID: 11400000, guid: 102a7d7b933826b42bc0916b03e9ae2d, type: 2}
+  projectilePrefab: {fileID: 7490362095518157664, guid: 751965e6d5b5dcd4eb20fb9f2236d386, type: 3}
+  projectileSpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  aimShootThreshold:
+    useInstanced: 0
+    shared: {fileID: 11400000, guid: b273f09740951cb489a360039c12dbc5, type: 2}
+    instanced: 0
   horizontalTR: {fileID: 6363721909094156185}
   verticalTR: {fileID: 3410238478188679919}
-  animatorTriggerNames:
-  - Shoot
 --- !u!1 &6609427108928329348
 GameObject:
   m_ObjectHideFlags: 0

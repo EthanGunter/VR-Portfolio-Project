@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.iOS;
 
 namespace SolarStorm.Entities
 {
-    public class HealthComponent : EntityComponent
+    public class HealthComponent : MonoBehaviour
     {
         [SerializeField] UnityEvent EntityKilled;
         public event Action OnKilled;
@@ -16,8 +16,9 @@ namespace SolarStorm.Entities
         public event Action<float> OnDamaged;
         public event Action<float> OnHealed;
 
+        public GameObject Entity { get; private set; }
+
         [field: SerializeField] public FloatRef MaxHealth { get; private set; } = 100;
-        [field: SerializeField]
         public float Health
         {
             get => _health;
@@ -31,15 +32,14 @@ namespace SolarStorm.Entities
                 }
             }
         }
-        private float _health;
+        [SerializeField] private float _health; // Serialized for debugging only
         public bool IsAlive { get; protected set; } = true;
 
 
         private readonly ModifierStack<float> damageModifiers = new();
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             Health = MaxHealth.Value;
         }
 
@@ -71,12 +71,12 @@ namespace SolarStorm.Entities
         public static implicit operator DamageContext(float value) => new DamageContext(value);
 
         public float Value { get; set; }
-        public GameEntity Target { get; set; }
-        public GameEntity Source { get; set; } = null;
+        public GameObject Target { get; set; }
+        public GameObject Source { get; set; } = null;
 
 
         public DamageContext() { }
-        public DamageContext(float amount, GameEntity source = null)
+        public DamageContext(float amount, GameObject source = null)
         {
             Value = amount;
             Source = source;

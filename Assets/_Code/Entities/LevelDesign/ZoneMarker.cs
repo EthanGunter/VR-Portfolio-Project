@@ -10,8 +10,8 @@ namespace SolarStorm.LevelDesign
     {
         [SerializeField] Collider[] colliders;
 
-        public event Action<GameEntity> GameEntityEnteredZone;
-        public event Action<GameEntity> GameEntityLeftZone;
+        public event Action<GameObject> GameEntityEnteredZone;
+        public event Action<GameObject> GameEntityLeftZone;
         protected WeightedList<Collider> _zone = new WeightedList<Collider>();
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace SolarStorm.LevelDesign
         }
         protected virtual void TriggerEnter(GameObject collider)
         {
-            if (collider.TryGetComponent(out GameEntity character))
+            if (collider.TryGetComponent(out HealthComponent character))
             {
-                GameEntityEnteredZone?.Invoke(character);
+                GameEntityEnteredZone?.Invoke(character.Entity);
             }
         }
 
@@ -68,9 +68,9 @@ namespace SolarStorm.LevelDesign
         }
         protected virtual void TriggerExit(GameObject collider)
         {
-            if (collider.TryGetComponent(out GameEntity character))
+            if (collider.TryGetComponent(out HealthComponent character))
             {
-                GameEntityLeftZone?.Invoke(character);
+                GameEntityLeftZone?.Invoke(character.Entity);
             }
         }
     }

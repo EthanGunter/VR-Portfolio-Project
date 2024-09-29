@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SolarStorm.Entities
 {
     [RequireComponent(typeof(TrainingDummyView))]
-    public class TrainingDummy : GameEntity
+    public class TrainingDummy : MonoBehaviour
     {
         #region Variables
 

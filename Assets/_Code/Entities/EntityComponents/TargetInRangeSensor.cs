@@ -4,16 +4,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetInRangeSensor : EntityComponent, ITargetSensor
+public class TargetInRangeSensor : MonoBehaviour, ITargetSensor
 {
     [Header("Targeting")]
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] FloatRef maxTargetingDistance;
 
-    public GameEntity Target { get; private set; }
+    public GameObject Target { get; private set; }
 
-    public event Action<GameEntity> OnTargetAcquired;
-    public event Action<GameEntity> OnTargetLost;
+    public event Action<GameObject> OnTargetAcquired;
+    public event Action<GameObject> OnTargetLost;
 
     private void AcquireTargets()
     {
@@ -31,16 +31,16 @@ public class TargetInRangeSensor : EntityComponent, ITargetSensor
         if (Target == null)
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, maxTargetingDistance, targetLayers);
-            GameEntity closestTarget = null;
+            GameObject closestTarget = null;
             float closestDist = float.MaxValue;
             foreach (Collider collider in colliders)
             {
-                if (collider.TryGetComponent(out GameEntity potentialTarget))
+                if (collider.TryGetComponent(out HealthComponent potentialTarget))
                 {
                     float dist = Vector3.Distance(potentialTarget.transform.position, transform.position);
                     if (dist < closestDist)
                     {
-                        closestTarget = potentialTarget;
+                        closestTarget = potentialTarget.Entity;
                         closestDist = dist;
                     }
                 }

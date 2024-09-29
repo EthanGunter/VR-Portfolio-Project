@@ -17,14 +17,14 @@ namespace SolarStorm.Entities
         public virtual string ID => DisplayName;
 
         /// <returns>
-        /// true if this modifier can be applied multiple times on the same <see cref="GameEntity"/>
+        /// true if this modifier can be applied multiple times on the same <see cref="GameObject"/>
         /// </returns>
         public abstract bool CanStack { get; }
 
         /// <param name="target"></param>
         /// <returns>True if the target</returns>
-        public abstract bool CanApplyTo(GameEntity target);
-        public abstract void OnEffectStart(GameEntity target);
-        public abstract void OnEffectEnd(GameEntity target);
+        public abstract bool CanApplyTo(GameObject target);
+        public abstract void OnEffectStart(GameObject target);
+        public abstract void OnEffectEnd(GameObject target);
     }
 }

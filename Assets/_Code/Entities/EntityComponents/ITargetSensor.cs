@@ -6,8 +6,8 @@ namespace SolarStorm.Entities
 {
     public interface ITargetSensor
     {
-        event Action<GameEntity> OnTargetAcquired;
-        event Action<GameEntity> OnTargetLost;
-        //IEnumerable<GameEntity> GetNextTargets(int num);
+        event Action<GameObject> OnTargetAcquired;
+        event Action<GameObject> OnTargetLost;
+        //IEnumerable<GameObject> GetNextTargets(int num);
     }
 }

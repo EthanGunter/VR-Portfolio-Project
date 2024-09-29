@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 
 namespace SolarStorm.Entities
 {
-    public class Tower : GameEntity
+    public class Tower : MonoBehaviour
     {
         #region Variables
 
@@ -35,7 +35,7 @@ namespace SolarStorm.Entities
         public event Action<Transform, int> OnShoot;
 
         public TurretLevelData CurrentLevelData => levelData[Level];
-        public GameEntity Target { get; private set; }
+        public GameObject Target { get; private set; }
 
         protected ObjectPool<Projectile> projectiles;
 
@@ -47,16 +47,13 @@ namespace SolarStorm.Entities
 
         #region Unity Messages
 
-        protected override void Awake()
+        protected void Awake()
         {
-            base.Awake();
             projectiles = new ObjectPool<Projectile>(CreateProjectile, GetProjectile, ReleaseProjectile, DestroyProjectile);
         }
 
-        protected override void Update()
+        protected void Update()
         {
-            base.Update();
-
             AcquireTarget();
             _angleFromTarget = Aim(CurrentLevelData.turnSpeed);
             if (_angleFromTarget < aimShootThreshold)
@@ -88,7 +85,7 @@ namespace SolarStorm.Entities
         #endregion
 
 
-        public void SetTarget(GameEntity target)
+        public void SetTarget(GameObject target)
         {
             Target = target;
         }
@@ -115,11 +112,11 @@ namespace SolarStorm.Entities
             if (Target == null)
             {
                 Collider[] colliders = Physics.OverlapSphere(transform.position, CurrentLevelData.maxTargetingDistance, targetLayers);
-                GameEntity closestTarget = null;
+                GameObject closestTarget = null;
                 float closestDist = float.MaxValue;
                 foreach (Collider collider in colliders)
                 {
-                    if (collider.TryGetComponent(out GameEntity potentialTarget))
+                    if (collider.TryGetComponent(out GameObject potentialTarget))
                     {
                         float dist = Vector3.Distance(potentialTarget.transform.position, transform.position);
                         if (dist < closestDist)

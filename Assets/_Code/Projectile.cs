@@ -11,7 +11,7 @@ public class Projectile : MonoBehaviour, IView
 
     private float _speed;
     private float _damage;
-    private GameEntity _target;
+    private GameObject _target;
 
     public event Action<Projectile, GameObject> OnHit;
 
@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour, IView
     #endregion
 
 
-    public void Initialize(GameEntity target, float damage = 0, float speed = 0, Color color = default(Color))
+    public void Initialize(GameObject target, float damage = 0, float speed = 0, Color color = default(Color))
     {
         _target = target;
         if (damage > 0) _damage = damage;
