@@ -50,10 +50,10 @@ namespace SolarStorm.Entities
 
         protected void Update()
         {
-            // If the target goes out of range, unset it
+            // If the target goes out of range or dies, unset it
             if (Target != null)
             {
-                if (Vector3.Distance(Target.transform.position, transform.position) > CurrentLevelData.maxTargetingDistance)
+                if (!Target.IsAlive || Vector3.Distance(Target.transform.position, transform.position) > CurrentLevelData.maxTargetingDistance)
                 {
                     CancelAttack();
                     Target = null;
@@ -130,13 +130,12 @@ namespace SolarStorm.Entities
         }
         private async Awaitable AttackTarget(CancellationToken token)
         {
-            while (Target != null && Target.IsAlive && !token.IsCancellationRequested)
+            while (Target != null && !token.IsCancellationRequested)
             {
                 TurretLevelData data = levelData[Level];
                 turretWeapon.Attack(Target, data);
                 await Awaitable.WaitForSecondsAsync(60 / data.shotsPerMinute);
             }
-            Target = null;
         }
         private void CancelAttack()
         {
@@ -146,7 +145,6 @@ namespace SolarStorm.Entities
                 _attackHandle.Dispose();
             }
             _attackHandle = null;
-            Target = null;
         }
     }
 }
