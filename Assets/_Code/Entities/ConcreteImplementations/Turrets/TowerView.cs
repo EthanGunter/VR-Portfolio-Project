@@ -33,6 +33,7 @@ namespace SolarStorm.Entities
             _emissiveRenderers = GetComponentsInChildren<Renderer>();
             _tower.OnLevelChange += OnLevelChange;
             _tower.GetComponent<ITurretWeapon>().OnShoot += OnShoot;
+            OnLevelChange(_tower.CurrentLevelData);
         }
 
         #endregion
