@@ -16,6 +16,8 @@ public class HealthBar : MonoBehaviour
             this.enabled = false;
             throw new MissingReferenceException($"{name} HealthBar component does not have the required HealthComponent reference. Disabling");
         }
+
+        healthSource.OnKilled += () => { gameObject.SetActive(false); };
     }
 
     private void Update()

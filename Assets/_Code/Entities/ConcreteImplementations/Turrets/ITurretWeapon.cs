@@ -13,7 +13,7 @@ namespace SolarStorm.Entities
         /// <summary>
         /// Attacks the given target
         /// </summary>
-        void Attack(GameObject target, TurretLevelData data);
+        void Attack(HealthComponent target, TurretLevelData data);
     }
 
     public interface IWeaponAsync

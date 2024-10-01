@@ -16,8 +16,6 @@ namespace SolarStorm.Entities
         public event Action<float> OnDamaged;
         public event Action<float> OnHealed;
 
-        public GameObject Entity { get; private set; }
-
         [field: SerializeField] public FloatRef MaxHealth { get; private set; } = 100;
         public float Health
         {
@@ -58,7 +56,7 @@ namespace SolarStorm.Entities
         }
         public virtual void DealDamage(DamageContext damage)
         {
-            damage.Target = Entity;
+            damage.Target = gameObject;
             damageModifiers.Apply(damage);
 
             Health -= damage.Value;

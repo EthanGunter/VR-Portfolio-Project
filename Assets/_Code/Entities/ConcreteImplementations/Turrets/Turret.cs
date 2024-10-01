@@ -10,7 +10,7 @@ namespace SolarStorm.Entities
     // TODO Create attribute:
     //[RequireInterface(typeof(ITargetSensor))]
     //[RequireInterface(typeof(IWeapon))]
-    public class Tower : MonoBehaviour
+    public class Turret : MonoBehaviour
     {
         #region Variables
 
@@ -32,7 +32,7 @@ namespace SolarStorm.Entities
         public event Action<TurretLevelData> OnLevelChange;
 
         public TurretLevelData CurrentLevelData => levelData[Level];
-        public GameObject Target { get; private set; }
+        public HealthComponent Target { get; private set; }
 
         private float _angleFromTarget;
         private CancellationTokenSource _attackHandle;
@@ -130,12 +130,13 @@ namespace SolarStorm.Entities
         }
         private async Awaitable AttackTarget(CancellationToken token)
         {
-            while (Target != null && !token.IsCancellationRequested)
+            while (Target != null && Target.IsAlive && !token.IsCancellationRequested)
             {
                 TurretLevelData data = levelData[Level];
                 turretWeapon.Attack(Target, data);
                 await Awaitable.WaitForSecondsAsync(60 / data.shotsPerMinute);
             }
+            Target = null;
         }
         private void CancelAttack()
         {
@@ -145,6 +146,7 @@ namespace SolarStorm.Entities
                 _attackHandle.Dispose();
             }
             _attackHandle = null;
+            Target = null;
         }
     }
 }

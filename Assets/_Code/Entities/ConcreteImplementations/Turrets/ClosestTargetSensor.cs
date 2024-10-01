@@ -17,19 +17,21 @@ public class ClosestTargetSensor : MonoBehaviour, ITargetSensor
 
     #endregion
 
-    public GameObject GetTarget()
+    public HealthComponent GetTarget()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, maxDistance, targetLayers);
-        GameObject closestTarget = null;
+        HealthComponent closestTarget = null;
         float closestDist = float.MaxValue;
         foreach (Collider collider in colliders)
         {
             if (collider.TryGetComponent(out HealthComponent potentialTarget))
             {
+                if (!potentialTarget.IsAlive) continue;
+
                 float dist = Vector3.Distance(potentialTarget.transform.position, transform.position);
                 if (dist < closestDist)
                 {
-                    closestTarget = potentialTarget.gameObject;
+                    closestTarget = potentialTarget;
                     closestDist = dist;
                 }
             }

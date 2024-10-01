@@ -33,7 +33,7 @@ public class DoubleBarrelTurretGun : MonoBehaviour, ITurretWeapon
     #endregion
 
 
-    public void Attack(GameObject target, TurretLevelData data)
+    public void Attack(HealthComponent target, TurretLevelData data)
     {
         Projectile p = projectiles.Get();
         p.Initialize(target, data.damagePerShot, data.projectileSpeed);

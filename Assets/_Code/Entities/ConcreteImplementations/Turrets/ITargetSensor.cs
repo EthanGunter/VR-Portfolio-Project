@@ -6,7 +6,7 @@ namespace SolarStorm.Entities
 {
     public interface ITargetSensor
     {
-        GameObject GetTarget();
+        HealthComponent GetTarget();
         
         // TODO should this be required for all target sensors? Or should there be an IMultiTargetSensor?
         // IEnumerable<GameObject> GetTargets(int num);

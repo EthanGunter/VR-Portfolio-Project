@@ -54,7 +54,7 @@ namespace SolarStorm.LevelDesign
         {
             if (collider.TryGetComponent(out HealthComponent character))
             {
-                GameEntityEnteredZone?.Invoke(character.Entity);
+                GameEntityEnteredZone?.Invoke(character.gameObject);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SolarStorm.LevelDesign
         {
             if (collider.TryGetComponent(out HealthComponent character))
             {
-                GameEntityLeftZone?.Invoke(character.Entity);
+                GameEntityLeftZone?.Invoke(character.gameObject);
             }
         }
     }

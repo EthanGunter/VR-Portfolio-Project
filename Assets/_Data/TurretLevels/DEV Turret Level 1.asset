@@ -28,7 +28,7 @@ MonoBehaviour:
   turnSpeed:
     useInstanced: 1
     shared: {fileID: 0}
-    instanced: 0.8
+    instanced: 2
   maxTargetingDistance:
     useInstanced: 0
     shared: {fileID: 11400000, guid: a3709d847e99ca84f99654f746f77c4a, type: 2}

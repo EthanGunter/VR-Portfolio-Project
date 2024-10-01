@@ -6,8 +6,8 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace SolarStorm.Entities
 {
-    [RequireComponent(typeof(Tower))]
-    public class TowerView : AbilityViewComponent
+    [RequireComponent(typeof(Turret))]
+    public class TurretView : AbilityViewComponent
     {
         #region Variables
 
@@ -15,7 +15,7 @@ namespace SolarStorm.Entities
         [SerializeField] string[] _shootAnimationTriggerNames;
 
         private Renderer[] _emissiveRenderers;
-        private Tower _tower;
+        private Turret _tower;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace SolarStorm.Entities
                     throw new MissingComponentException($"TowerView found no animator on {name}");
                 }
 
-            _tower = GetComponent<Tower>();
+            _tower = GetComponent<Turret>();
             _emissiveRenderers = GetComponentsInChildren<Renderer>();
             _tower.OnLevelChange += OnLevelChange;
             _tower.GetComponent<ITurretWeapon>().OnShoot += OnShoot;
