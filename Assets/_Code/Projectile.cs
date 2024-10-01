@@ -51,7 +51,7 @@ public class Projectile : MonoBehaviour, IView
 
     private void HitTarget()
     {
-        _target.GetComponent<HealthComponent>().DealDamage(new DamageContext());
+        _target.GetComponent<HealthComponent>().DealDamage(new DamageContext(_damage));
         OnHit?.Invoke(this, _target.gameObject);
     }
 
