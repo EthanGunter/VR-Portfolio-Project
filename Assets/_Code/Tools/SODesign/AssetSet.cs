@@ -8,30 +8,28 @@ namespace SolarStorm.UnityToolkit
 {
     public abstract class AssetSet<T> : ScriptableObject
     {
-        [SerializeField] private readonly List<T> _items;
-        private int _count;
+        [SerializeField] protected List<T> items;
 
-
-        public bool IsReadOnly => ((ICollection<T>)_items).IsReadOnly;
+        public bool IsReadOnly => ((ICollection<T>)items).IsReadOnly;
 
         public T GetRandom()
         {
-            return _items[Random.Range(0, _items.Count)];
+            return items[Random.Range(0, items.Count)];
         }
 
         public T FindFirst(Func<T, bool> predicate = null)
         {
             T item;
             if (predicate != null)
-                item = _items.FirstOrDefault(predicate);
+                item = items.FirstOrDefault(predicate);
             else
-                item = _items.FirstOrDefault();
+                item = items.FirstOrDefault();
 
             return item;
         }
         public IEnumerable<T> FindAll(Func<T, bool> predicate = null)
         {
-            return _items.Where(predicate);
+            return items.Where(predicate);
         }
     }
 }

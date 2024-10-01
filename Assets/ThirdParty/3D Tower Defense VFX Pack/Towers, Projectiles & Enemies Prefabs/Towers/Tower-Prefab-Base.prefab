@@ -43,7 +43,8 @@ GameObject:
   - component: {fileID: 5024251142148115053}
   - component: {fileID: 6601769117460072290}
   - component: {fileID: 3983744909626942503}
-  - component: {fileID: 7270245118866468193}
+  - component: {fileID: 6646070209386415797}
+  - component: {fileID: 3488216021691533386}
   - component: {fileID: 4373117808998600602}
   m_Layer: 0
   m_Name: Tower-Prefab-Base
@@ -104,9 +105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _towerAnimator: {fileID: 6601769117460072290}
   _shootAnimationTriggerNames:
-  - ShootLeft
-  - ShootRight
---- !u!114 &7270245118866468193
+  - Shoot
+--- !u!114 &6646070209386415797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 3294891927239499837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d10b31a6ee0914fbf5df0895299280, type: 3}
+  m_Script: {fileID: 11500000, guid: b3dc93fd088d6f14ba54dbdd2ff694f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntityKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  <MaxHealth>k__BackingField:
+    useInstanced: 1
+    shared: {fileID: 0}
+    instanced: 100
+  _health: 0
+--- !u!114 &3488216021691533386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294891927239499837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795ef72200b02d345bad519bd54ac017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Level>k__BackingField: 0
@@ -142,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580725d7b1cd3c2429df4e99a7abff20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSet: {fileID: 11400000, guid: 53b2df5ccb08fb6438524fdee629967c, type: 2}
+  targetSet: {fileID: 11400000, guid: 5f58e877ac322564e9f6979489c99eb2, type: 2}
   targetLayers:
     serializedVersion: 2
     m_Bits: 1024

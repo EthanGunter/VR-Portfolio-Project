@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.iOS;
 
 namespace SolarStorm.Entities
 {
+    [DisallowMultipleComponent]
     public class HealthComponent : MonoBehaviour
     {
         [SerializeField] UnityEvent EntityKilled;

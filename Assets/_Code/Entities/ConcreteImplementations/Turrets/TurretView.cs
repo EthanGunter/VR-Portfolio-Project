@@ -7,6 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 namespace SolarStorm.Entities
 {
     [RequireComponent(typeof(Turret))]
+    [DisallowMultipleComponent]
     public class TurretView : AbilityViewComponent
     {
         #region Variables

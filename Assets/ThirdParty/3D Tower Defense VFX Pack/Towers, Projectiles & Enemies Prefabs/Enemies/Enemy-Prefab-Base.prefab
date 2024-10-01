@@ -99,9 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c144c66d638b51439277bc678ae5e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restart: 0
-  stop: 0
-  start: 0
   road: {fileID: 0}
   EndOfRoadReached:
     m_PersistentCalls:
@@ -114,8 +111,7 @@ MonoBehaviour:
     useInstanced: 1
     shared: {fileID: 0}
     instanced: 1
-  offset: {x: 0, y: 0, z: 0}
-  path: []
+  heightOffset: 0.2
 --- !u!135 &6357236773158850511
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a009dfcc643d8944ab2468b054f8df99, type: 3}
+  m_Name: Spawnable Enemies
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 4158430457915311944, guid: 1c473a842b7dfd5439f7042526428b56, type: 3}
+  - {fileID: 4158430457915311944, guid: d242966d5f90e2c48b691be844f29860, type: 3}
+  - {fileID: 4158430457915311944, guid: de5871e59ef13d243aba89f1b4a81ed6, type: 3}
+  - {fileID: 4158430457915311944, guid: f4b091edfd04f234d85accf544e7d5a4, type: 3}
+  - {fileID: 4158430457915311944, guid: 5700340ef0f6e044eab92b3d157ae805, type: 3}
+  - {fileID: 4158430457915311944, guid: c8cd01dd52ecdd04f84c409eb08856a0, type: 3}
