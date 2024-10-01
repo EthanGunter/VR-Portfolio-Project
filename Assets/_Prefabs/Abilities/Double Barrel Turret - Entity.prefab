@@ -963,6 +963,9 @@ PrefabInstance:
       addedObject: {fileID: 5410106355784507495}
     - targetCorrespondingSourceObject: {fileID: 3294891927239499837, guid: ea1cfa8325905e44eadf29c919854850, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6640782634756666725}
+    - targetCorrespondingSourceObject: {fileID: 3294891927239499837, guid: ea1cfa8325905e44eadf29c919854850, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4524682057836875566}
   m_SourcePrefab: {fileID: 100100000, guid: ea1cfa8325905e44eadf29c919854850, type: 3}
 --- !u!1 &3281559325467724599 stripped
@@ -1003,6 +1006,22 @@ MonoBehaviour:
     instanced: 100
   _health: 0
   aliveTime: 10
+--- !u!114 &6640782634756666725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281559325467724599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee40723bdae72f49b88b7b367aa141b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7490362095518157664, guid: 751965e6d5b5dcd4eb20fb9f2236d386, type: 3}
+  projectileSpawnPoints:
+  - {fileID: 3702044651849556925}
+  - {fileID: 2626713550583881947}
 --- !u!114 &4524682057836875566
 MonoBehaviour:
   m_ObjectHideFlags: 0

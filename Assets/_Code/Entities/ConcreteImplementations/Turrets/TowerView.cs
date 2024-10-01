@@ -32,7 +32,7 @@ namespace SolarStorm.Entities
             _tower = GetComponent<Tower>();
             _emissiveRenderers = GetComponentsInChildren<Renderer>();
             _tower.OnLevelChange += OnLevelChange;
-            _tower.OnShoot += OnShoot;
+            _tower.GetComponent<ITurretWeapon>().OnShoot += OnShoot;
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace SolarStorm.Entities
                 }
             }
         }
-        private void OnShoot(Transform location, int index)
+        private void OnShoot(int index)
         {
             _towerAnimator.SetTrigger(_shootAnimationTriggerNames[index]);
         }

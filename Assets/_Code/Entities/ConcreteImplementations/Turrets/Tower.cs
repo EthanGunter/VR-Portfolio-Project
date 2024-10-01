@@ -7,6 +7,9 @@ using UnityEngine.Pool;
 
 namespace SolarStorm.Entities
 {
+    // TODO Create attribute:
+    //[RequireInterface(typeof(ITargetSensor))]
+    //[RequireInterface(typeof(IWeapon))]
     public class Tower : MonoBehaviour
     {
         #region Variables
@@ -16,28 +19,20 @@ namespace SolarStorm.Entities
         [field: SerializeField] public int Level { get; private set; }
         [SerializeField] private TurretLevelData[] levelData;
 
-        [Header("Projectiles")]
-        [SerializeField] private Projectile projectilePrefab;
-        [SerializeField] private Transform[] projectileSpawnPoints;
-
         [Header("Targeting")]
-        [SerializeField] private LayerMask targetLayers;
         [Tooltip("How many degrees away from the target a turret needs to be before it starts shooting")]
         [SerializeField] private FloatRef aimShootThreshold;
+        [SerializeField] ITargetSensor enemySensor;
+        [SerializeField] ITurretWeapon turretWeapon;
+
         [SerializeField] private Transform horizontalTR;
         [SerializeField] private Transform verticalTR;
 
         // C# fields
         public event Action<TurretLevelData> OnLevelChange;
-        /// <summary>
-        /// The position shooting from, and its index in the projectileSpawnPoints list
-        /// </summary>
-        public event Action<Transform, int> OnShoot;
 
         public TurretLevelData CurrentLevelData => levelData[Level];
         public GameObject Target { get; private set; }
-
-        protected ObjectPool<Projectile> projectiles;
 
         private float _angleFromTarget;
         private CancellationTokenSource _attackHandle;
@@ -47,14 +42,30 @@ namespace SolarStorm.Entities
 
         #region Unity Messages
 
-        protected void Awake()
+        private void Awake()
         {
-            projectiles = new ObjectPool<Projectile>(CreateProjectile, GetProjectile, ReleaseProjectile, DestroyProjectile);
+            if (!TryGetComponent(out enemySensor)) throw new MissingComponentException($"Turret {name} is missing a necessary {nameof(ITargetSensor)} component");
+            if (!TryGetComponent(out turretWeapon)) throw new MissingComponentException($"Turret {name} is missing a necessary {nameof(ITurretWeapon)} component");
         }
 
         protected void Update()
         {
-            AcquireTarget();
+            // If the target goes out of range, unset it
+            if (Target != null)
+            {
+                if (Vector3.Distance(Target.transform.position, transform.position) > CurrentLevelData.maxTargetingDistance)
+                {
+                    CancelAttack();
+                    Target = null;
+                }
+            }
+
+            // Then, if there is no target, get the closest one and set it as the target
+            if (Target == null)
+            {
+                Target = enemySensor.GetTarget();
+            }
+
             _angleFromTarget = Aim(CurrentLevelData.turnSpeed);
             if (_angleFromTarget < aimShootThreshold)
             {
@@ -85,51 +96,13 @@ namespace SolarStorm.Entities
         #endregion
 
 
-        public void SetTarget(GameObject target)
-        {
-            Target = target;
-        }
-
         public void LevelUp()
         {
             Level = Mathf.Min(Level + 1, levelData.Length - 1);
             OnLevelChange?.Invoke(levelData[Level]);
         }
 
-        private void AcquireTarget()
-        {
-            // If the target goes out of range, unset it
-            if (Target != null)
-            {
-                if (Vector3.Distance(Target.transform.position, transform.position) > CurrentLevelData.maxTargetingDistance)
-                {
-                    CancelAttack();
-                    Target = null;
-                }
-            }
 
-            // Then, if there is no target, get the closest one and set it as the target
-            if (Target == null)
-            {
-                Collider[] colliders = Physics.OverlapSphere(transform.position, CurrentLevelData.maxTargetingDistance, targetLayers);
-                GameObject closestTarget = null;
-                float closestDist = float.MaxValue;
-                foreach (Collider collider in colliders)
-                {
-                    if (collider.TryGetComponent(out GameObject potentialTarget))
-                    {
-                        float dist = Vector3.Distance(potentialTarget.transform.position, transform.position);
-                        if (dist < closestDist)
-                        {
-                            closestTarget = potentialTarget;
-                            closestDist = dist;
-                        }
-                    }
-                }
-
-                Target = closestTarget;
-            }
-        }
         private float Aim(float turnSpeed)
         {
             if (Target != null)
@@ -144,7 +117,8 @@ namespace SolarStorm.Entities
                 Quaternion pitchingSideRot = Quaternion.RotateTowards(verticalTR.localRotation, Quaternion.LookRotation(dirV), turnSpeed);
                 verticalTR.localRotation = Quaternion.Euler(pitchingSideRot.eulerAngles.x, 0, 0);
 
-                Quaternion barrelTargetRotation = Quaternion.LookRotation(Target.transform.position - projectileSpawnPoints[0].position);
+                Quaternion barrelTargetRotation = Quaternion.LookRotation(Target.transform.position - verticalTR.position);
+
                 return Quaternion.Angle(Quaternion.Euler(pitchingSideRot.eulerAngles.x, rotatingSideRot.eulerAngles.y, 0), barrelTargetRotation);
             }
             else
@@ -156,18 +130,10 @@ namespace SolarStorm.Entities
         }
         private async Awaitable AttackTarget(CancellationToken token)
         {
-            int spawnIndex = 0;
             while (Target != null && !token.IsCancellationRequested)
             {
                 TurretLevelData data = levelData[Level];
-                Projectile p = projectiles.Get();
-                p.Initialize(Target, data.damagePerShot, data.projectileSpeed);
-
-                spawnIndex = (spawnIndex + 1) % projectileSpawnPoints.Length;
-                p.transform.position = projectileSpawnPoints[spawnIndex].position;
-
-                OnShoot?.Invoke(projectileSpawnPoints[spawnIndex], spawnIndex);
-
+                turretWeapon.Attack(Target, data);
                 await Awaitable.WaitForSecondsAsync(60 / data.shotsPerMinute);
             }
         }
@@ -180,39 +146,5 @@ namespace SolarStorm.Entities
             }
             _attackHandle = null;
         }
-
-
-        #region Projectile Pool
-
-        private Projectile CreateProjectile()
-        {
-            Projectile p = Instantiate(projectilePrefab, transform);
-            p.OnHit += OnProjectileHit;
-            return p;
-        }
-
-        private void GetProjectile(Projectile projectile)
-        {
-            projectile.Show();
-        }
-
-        private async void ReleaseProjectile(Projectile projectile)
-        {
-            await projectile.HideAsync();
-            projectile.Hide();
-        }
-
-        private void DestroyProjectile(Projectile projectile)
-        {
-            projectile.OnHit -= OnProjectileHit;
-            Destroy(projectile);
-        }
-
-        private void OnProjectileHit(Projectile proj, GameObject ent)
-        {
-            projectiles.Release(proj);
-        }
-
-        #endregion
     }
 }
