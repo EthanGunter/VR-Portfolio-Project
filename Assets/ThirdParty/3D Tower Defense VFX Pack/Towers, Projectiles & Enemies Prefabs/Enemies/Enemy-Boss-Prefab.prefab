@@ -143,6 +143,14 @@ PrefabInstance:
       propertyPath: <MaxHealth>k__BackingField.instanced
       value: 160
       objectReference: {fileID: 0}
+    - target: {fileID: 6706114550070392230, guid: 637a5a2277006cc4f936e60bac4c161b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706114550070392230, guid: 637a5a2277006cc4f936e60bac4c161b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -233,8 +241,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8093136fad40ea249bed255e78ff0335, type: 3}
---- !u!224 &375300409258950343 stripped
-RectTransform:
+--- !u!4 &375300409258950343 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 2171432197154483672, guid: 8093136fad40ea249bed255e78ff0335, type: 3}
   m_PrefabInstance: {fileID: 1952081395455955743}
   m_PrefabAsset: {fileID: 0}
