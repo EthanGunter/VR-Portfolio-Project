@@ -2,8 +2,8 @@
 
 namespace SolarStorm.UnityToolkit
 {
-    [CreateAssetMenu(menuName = "Shared Data/Collections/Game Object Set")]
-    public class GameObjectSet : RuntimeSet<GameObject>
+    [CreateAssetMenu(menuName = "Shared Data/Runtime Collections/Game Objects")]
+    public class GameObjectRuntimeSet : RuntimeSet<GameObject>
     {
         // TODO? - automatic physics layer assignment
         //public bool useLayerMask = false;

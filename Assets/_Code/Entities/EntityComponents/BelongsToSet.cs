@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BelongsToSet : MonoBehaviour
 {
-    [SerializeField] GameObjectSet[] _runtimeSets;
+    [SerializeField] GameObjectRuntimeSet[] _runtimeSets;
     [Tooltip("If true, this object will be accessible from runtime sets, even if it is not active")]
     [SerializeField] readonly bool _inSetWhenDisabled;
 

@@ -6,7 +6,7 @@ public class ClosestTargetSensor : MonoBehaviour, ITargetSensor
 {
     #region Variables
 
-    [SerializeField] GameObjectSet targetSet;
+    [SerializeField] GameObjectRuntimeSet targetSet;
     [SerializeField] LayerMask targetLayers;
     [SerializeField] FloatRef maxDistance;
 
