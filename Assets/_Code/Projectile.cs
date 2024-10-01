@@ -9,8 +9,9 @@ public class Projectile : MonoBehaviour, IView
 {
     #region Variables
 
-    private float _speed;
-    private float _damage;
+    [SerializeField] float damage;
+    [SerializeField] float speed;
+
     private HealthComponent _target;
 
     public event Action<Projectile, GameObject> OnHit;
@@ -23,12 +24,9 @@ public class Projectile : MonoBehaviour, IView
     #endregion
 
 
-    public void Initialize(HealthComponent target, float damage = 0, float speed = 0, Color color = default(Color))
+    public void Initialize(HealthComponent target)
     {
         _target = target;
-        if (damage > 0) _damage = damage;
-        if (speed > 0) _speed = speed;
-        // TODO Implement projectile color change...
     }
 
     private void Update()
@@ -39,7 +37,7 @@ public class Projectile : MonoBehaviour, IView
 
     private bool MoveToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, _speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, speed * Time.deltaTime);
         Vector3 dir = _target.transform.position - transform.position;
 
         if (dir.sqrMagnitude < 0.001f)
@@ -51,7 +49,7 @@ public class Projectile : MonoBehaviour, IView
 
     private void HitTarget()
     {
-        _target.GetComponent<HealthComponent>().DealDamage(new DamageContext(_damage));
+        _target.GetComponent<HealthComponent>().DealDamage(new DamageContext(damage));
         OnHit?.Invoke(this, _target.gameObject);
     }
 

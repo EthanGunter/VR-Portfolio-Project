@@ -36,7 +36,7 @@ public class DoubleBarrelTurretGun : MonoBehaviour, ITurretWeapon
     public void Attack(HealthComponent target, TurretLevelData data)
     {
         Projectile p = projectiles.Get();
-        p.Initialize(target, data.damagePerShot, data.projectileSpeed);
+        p.Initialize(target);
 
         spawnIndex = (spawnIndex + 1) % projectileSpawnPoints.Length;
         p.transform.position = projectileSpawnPoints[spawnIndex].position;
