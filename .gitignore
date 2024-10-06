@@ -73,7 +73,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Custom ignores
-**/gitignore/**
+**/*ignore/**
+**ignore.meta
 **/*dev*/**
 samples/
 textmesh pro/

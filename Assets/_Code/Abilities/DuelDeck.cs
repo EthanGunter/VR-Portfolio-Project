@@ -40,8 +40,6 @@ public class DuelDeck : MonoBehaviour
         }
 
         //Draws a new hand, even if the ability is still active...
-        // TODO Cool, but broken for the moment
-        //IEnumerable<AbilityData> addedData = DrawPile.Draw(num);
         IEnumerable<AbilityData> addedData = DrawPile.Draw(num);
         foreach (AbilityData data in addedData)
         {
@@ -71,7 +69,6 @@ public class DuelDeck : MonoBehaviour
     private void AbilityStateChanged(AbilityData ability)
     {
         HandleStateChangeV2(ability);
-
     }
 
     /// <summary>

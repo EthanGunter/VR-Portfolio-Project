@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: DEV Starter Deck
   m_EditorClassIdentifier: 
   _abilities:
-  - {fileID: 11400000, guid: 263e42f50a4b20f4faecd26895bb750d, type: 2}
   - {fileID: 11400000, guid: 20f9bea9e3f51c94c995be29abfa567a, type: 2}
   - {fileID: 11400000, guid: 20f9bea9e3f51c94c995be29abfa567a, type: 2}

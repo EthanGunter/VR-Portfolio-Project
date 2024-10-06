@@ -461,6 +461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7141665194250351016}
   - component: {fileID: 7917807189416878874}
+  - component: {fileID: 4373682471141140045}
   - component: {fileID: 991559020361138527}
   - component: {fileID: 3971648285490524617}
   - component: {fileID: 4776017395686947902}
@@ -495,7 +496,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6820417026480815986}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c78a723e57fa8dd4a9913e848f80952b, type: 3}
   m_Name: 
@@ -523,6 +524,38 @@ MonoBehaviour:
     shared: {fileID: 0}
     instanced: 1
   resetRotationOnPlacement: 0
+--- !u!114 &4373682471141140045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6820417026480815986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75df338fe00d8154c82f504aa32bf890, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers: []
+  colorShaderName: _Color
+  validSurfaces:
+    serializedVersion: 2
+    m_Bits: 1
+  placementPreview: {fileID: 0}
+  validColor:
+    useInstanced: 0
+    shared: {fileID: 11400000, guid: 552b15eea430a314fac7025d8a15c052, type: 2}
+    instanced: {r: 0, g: 0, b: 0, a: 0}
+  invalidColor:
+    useInstanced: 0
+    shared: {fileID: 11400000, guid: daae13fcdcd30b64db06e28d43c3d614, type: 2}
+    instanced: {r: 0, g: 0, b: 0, a: 0}
+  maxRayLength:
+    useInstanced: 1
+    shared: {fileID: 0}
+    instanced: 1
+  sphereCastRadius: 1
+  keepTurretYRotation: 1
 --- !u!120 &991559020361138527
 LineRenderer:
   serializedVersion: 2

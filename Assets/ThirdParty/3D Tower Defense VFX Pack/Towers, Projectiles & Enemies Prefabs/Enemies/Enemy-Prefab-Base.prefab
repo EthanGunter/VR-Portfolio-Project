@@ -179,12 +179,12 @@ MonoBehaviour:
   moveSpeed:
     useInstanced: 1
     shared: {fileID: 0}
-    instanced: 1
+    instanced: 0.15
   pointSpacing:
     useInstanced: 1
     shared: {fileID: 0}
     instanced: 1
-  heightOffset: 0.2
+  heightOffset: 0.02
 --- !u!135 &6357236773158850511
 SphereCollider:
   m_ObjectHideFlags: 0
