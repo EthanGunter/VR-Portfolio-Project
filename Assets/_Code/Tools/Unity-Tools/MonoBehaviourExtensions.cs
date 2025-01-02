@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,6 +17,22 @@ namespace SolarStorm.UnityToolkit
             obj.transform.position = FAR_AWAY;
             await Task.Delay(100);
             UnityEngine.Object.Destroy(obj);
+        }
+
+        public static List<Transform> GetChildren(this Transform transform, bool recursive = false)
+        {
+            List<Transform> children = new List<Transform>();
+
+            foreach(Transform child in transform)
+            {
+                children.Add(child);
+                if (recursive)
+                {
+                    children.AddRange(child.GetChildren(true));
+                }
+            }
+
+            return children;
         }
     }
     public static class ComponentExtensions
