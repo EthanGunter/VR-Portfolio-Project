@@ -20,7 +20,7 @@ public class RectTransformCopySize : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    [EasyButtons.Button]
+    [Sirenix.OdinInspector.Button]
     private void InspectorUpdate()
     {
         GetComponent<RectTransform>().sizeDelta = new Vector2(rectTransform.sizeDelta.x + padding.x * 2, rectTransform.sizeDelta.y + padding.y * 2);
