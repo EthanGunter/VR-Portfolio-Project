@@ -1,4 +1,5 @@
 ﻿
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,14 @@ namespace SolarStorm.UnityToolkit
 
         public virtual void AddListener(UnityAction<T> handler) => _event.AddListener(handler);
         public virtual void RemoveListener(UnityAction<T> handler) => _event.RemoveListener(handler);
-        public virtual void Raise(T args) => _event.Invoke(args);
+        public virtual void Invoke(T args) => _event.Invoke(args);
+
+#if UNITY_EDITOR
+        [Button]
+        private void Trigger(T arg)
+        {
+            Invoke(arg);
+        }
+#endif
     }
 }

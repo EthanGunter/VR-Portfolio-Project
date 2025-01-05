@@ -22,6 +22,7 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         }
     }
     float _animateTime = 2;
+    [SerializeField] bool spawnOnStart = false;
     [SerializeField, Range(0, 1f), Tooltip("How far through the animation all objects will be spawned")] float lastSpawnPercent = .6f;
     [SerializeField] float fallHeight = 200;
     [SerializeField] List<Transform> itemsToAnimate = new();
@@ -34,7 +35,10 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         AnimateTime = _animateTime;
         foreach (Transform t in itemsToAnimate)
         {
-            t.gameObject.SetActive(false);
+            if (!spawnOnStart)
+            {
+                t.gameObject.SetActive(false);
+            }
             originalHeights.Add(t, t.position);
         }
     }
