@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace RoboRyanTron.Unite2017.Events
 {
-    [CustomEditor(typeof(GameEvent), editorForChildClasses: true)]
+    /*[CustomEditor(typeof(GameEvent), editorForChildClasses: true)]
     public class GameEventEditor : Editor
     {
         public override void OnInspectorGUI()
@@ -24,5 +24,5 @@ namespace RoboRyanTron.Unite2017.Events
             if (GUILayout.Button("Raise"))
                 e.Raise();
         }
-    }
+    }*/
 }
