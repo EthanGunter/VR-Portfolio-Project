@@ -9,6 +9,7 @@ EditorBuildSettings:
     path: Assets/ThirdParty/3D Tower Defense VFX Pack/Scenes/DemoScene-ShowRoom.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ec6b5ded56e751247b5b2ac471691abd, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 84d9e260a42faf44bb02fd4986c131a6, type: 2}
