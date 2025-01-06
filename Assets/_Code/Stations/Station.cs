@@ -8,7 +8,7 @@ public class Station : MonoBehaviour
 
     [ShowInInspector, Title("Temp, global")] static float headCounterOffset = 0.4f;
 
-    [SerializeField] ScriptableEvent<float> playerHeightChanged;
+    [SerializeField, Required] ScriptableEvent<float> playerHeightChanged;
 
     #endregion
 

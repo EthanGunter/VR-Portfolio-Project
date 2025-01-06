@@ -45,7 +45,7 @@ public class Narrator : SerializedMonoBehaviour
     [SerializeField, MinMaxSlider(-80, 0)] Vector2 gradientDBBounds = new Vector2(-80f, 0f);
     [SerializeField, Range(0, 1)] float smoothness = 0;
     AudioSource audioSource;
-    SpriteRenderer renderer;
+    new SpriteRenderer renderer;
 
     private void Awake()
     {
