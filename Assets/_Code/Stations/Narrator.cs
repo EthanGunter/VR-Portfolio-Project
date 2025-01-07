@@ -41,7 +41,7 @@ public class Narrator : SerializedMonoBehaviour
     #endregion
 
 
-    [SerializeField] Gradient gradient;
+    [SerializeField] Gradient gradient = new Gradient();
     [SerializeField, MinMaxSlider(-80, 0)] Vector2 gradientDBBounds = new Vector2(-80f, 0f);
     [SerializeField, Range(0, 1)] float smoothness = 0;
     AudioSource audioSource;
@@ -49,15 +49,6 @@ public class Narrator : SerializedMonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         audioSource = GetComponent<AudioSource>();
         renderer = GetComponent<SpriteRenderer>();
         renderer.color = gradient.Evaluate(0);
