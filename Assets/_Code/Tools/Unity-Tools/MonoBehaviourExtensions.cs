@@ -23,7 +23,7 @@ namespace SolarStorm.UnityToolkit
         {
             List<Transform> children = new List<Transform>();
 
-            foreach(Transform child in transform)
+            foreach (Transform child in transform)
             {
                 children.Add(child);
                 if (recursive)
@@ -33,6 +33,23 @@ namespace SolarStorm.UnityToolkit
             }
 
             return children;
+        }
+
+        /// <summary>
+        /// Returns the first instance of a component in the ancestor heirarchy
+        /// </summary>
+        public static T GetComponentInAncestors<T>(this Transform transform) where T : Component
+        {
+            T component = null;
+            Transform target = transform.parent;
+            do
+            {
+                component = target.GetComponent<T>();
+                target = transform.parent;
+            }
+            while (target != null && component == null);
+
+            return component;
         }
     }
     public static class ComponentExtensions

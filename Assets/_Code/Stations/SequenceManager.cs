@@ -24,6 +24,10 @@ public class SequenceManager : SerializedMonoBehaviour
     public bool CanSkip => Index < frames.Length - 2;
     public bool HasPrev => Index > 0;
 
+    #endregion
+
+
+    #region Unity Messages
 
     private void Awake()
     {
@@ -38,6 +42,8 @@ public class SequenceManager : SerializedMonoBehaviour
     }
 
     #endregion
+
+
     [ButtonGroup("controls")]
     public void Prev()
     {

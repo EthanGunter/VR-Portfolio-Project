@@ -7,7 +7,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(SpriteRenderer))]
-public class Narrator : SerializedMonoBehaviour
+public class Narrator : MonoBehaviour
 {
     #region STATIC
 
@@ -44,14 +44,20 @@ public class Narrator : SerializedMonoBehaviour
     [SerializeField] Gradient gradient = new Gradient();
     [SerializeField, MinMaxSlider(-80, 0)] Vector2 gradientDBBounds = new Vector2(-80f, 0f);
     [SerializeField, Range(0, 1)] float smoothness = 0;
-    AudioSource audioSource;
+    [SerializeField] Vector2 scaleIncrease = new Vector2(-.1f, .1f);
+
+    private Vector2 initScale;
+
     new SpriteRenderer renderer;
+    AudioSource audioSource;
+
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         renderer = GetComponent<SpriteRenderer>();
         renderer.color = gradient.Evaluate(0);
+        initScale = transform.localScale;
     }
 
     [Button]
@@ -59,7 +65,7 @@ public class Narrator : SerializedMonoBehaviour
     {
         if (location != default)
         {
-            instance.transform.DOMove(location, 2).SetEase(Ease.OutCubic);
+            instance.transform.DOMove(location, 3).SetEase(Ease.OutCubic);
         }
         if (audioSource == null) return;
 
@@ -91,6 +97,8 @@ public class Narrator : SerializedMonoBehaviour
 
             // Set the sprite color
             renderer.color = Color.Lerp(renderer.color, gradient.Evaluate(intensity), 1 - smoothness);
+
+            transform.localScale = new Vector3(initScale.x + (scaleIncrease.x * intensity), initScale.y + (scaleIncrease.y * intensity), transform.localScale.z);
 
             await Awaitable.EndOfFrameAsync();
         }

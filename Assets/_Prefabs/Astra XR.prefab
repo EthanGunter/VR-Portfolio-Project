@@ -845,10 +845,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WristMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 4082950700671660745, guid: 399e4cfa48ddc9d4ab8b508392d956bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4709969950279090947, guid: 399e4cfa48ddc9d4ab8b508392d956bb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
