@@ -1,11 +1,26 @@
+using System;
+using System.Collections;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
+[RequireComponent(typeof(TeleportationAnchor))]
 public class SpawnPlayerAtStart : MonoBehaviour
 {
-    private void Start()
+    TeleportationProvider provider;
+    TeleportationAnchor anchor;
+    private void Awake()
     {
-        // Move the player to the spawn position
-        Player.XROrigin.transform.position = new Vector3(transform.position.x, Player.XROrigin.transform.position.y, transform.position.z);
+        anchor = GetComponent<TeleportationAnchor>();
+        StartCoroutine(WaitToSpawn());
+    }
+
+    private IEnumerator WaitToSpawn()
+    {
+        while (!Player.HMDConnected)
+        {
+            yield return null;
+        }
+        anchor.RequestTeleport();
     }
 }

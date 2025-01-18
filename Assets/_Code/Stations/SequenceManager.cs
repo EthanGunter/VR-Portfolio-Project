@@ -36,7 +36,6 @@ public class SequenceManager : SerializedMonoBehaviour
             frame.elements.SetActive(false);
         }
 
-        // TODO Spawn??
         Index = 0;
         PlayFrame(-1, 0);
     }
@@ -139,7 +138,6 @@ public class SequenceManager : SerializedMonoBehaviour
     {
         [Required]
         public GameObject elements;
-        [Required]
         public AudioClip voiceover;
         public Transform narratorPosition;
         public bool nauseaRisk;

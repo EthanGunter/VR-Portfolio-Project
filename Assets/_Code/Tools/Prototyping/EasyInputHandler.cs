@@ -7,7 +7,7 @@ public class EasyInputHandler : MonoBehaviour
     #region Variables
 
     [SerializeField] InputActionReference inputAction;
-    [SerializeField] UltEvents.UltEvent handlers;
+    [SerializeField] UnityEvent handlers;
 
 
     #endregion

@@ -17,17 +17,19 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         set
         {
             _animateTime = value;
-            fallTime = _animateTime * (1 - lastSpawnPercent);
-            spawnDelay = (_animateTime - fallTime) / itemsToAnimate.Count;
+            animTime = _animateTime * (1 - lastSpawnPercent);
+            spawnDelay = (_animateTime - animTime) / itemsToAnimate.Count;
         }
     }
     float _animateTime = 2;
-    [SerializeField] bool spawnOnStart = false;
+    [SerializeField] bool animateOnEnable = true;
+    [SerializeField, Tooltip("or out")] bool animateIn = true;
     [SerializeField, Range(0, 1f), Tooltip("How far through the animation all objects will be spawned")] float lastSpawnPercent = .6f;
-    [SerializeField] float fallHeight = 200;
+    [SerializeField] Vector3 targetOffset = new Vector3(0, 200, 0);
+    [SerializeField] GameObject root;
     [SerializeField] List<Transform> itemsToAnimate = new();
-    [SerializeField] Dictionary<Transform, Vector3> originalHeights = new();
-    float fallTime, spawnDelay;
+    Dictionary<Transform, Vector3> originalHeights = new();
+    float animTime, spawnDelay;
 
 
     private void Awake()
@@ -35,11 +37,26 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         AnimateTime = _animateTime;
         foreach (Transform t in itemsToAnimate)
         {
-            if (!spawnOnStart)
+            if (!animateOnEnable)
             {
                 t.gameObject.SetActive(false);
-            }
+            } 
             originalHeights.Add(t, t.position);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (animateOnEnable)
+        {
+            if (animateIn)
+            {
+                AnimateIn();
+            }
+            else
+            {
+                AnimateOut();
+            }
         }
     }
 
@@ -47,13 +64,14 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
     {
         Queue<Transform> queue = new Queue<Transform>(itemsToAnimate);
         List<Task> animatingObjects = new();
+        root?.SetActive(true);
 
         while (queue.Count > 0)
         {
             Transform child = queue.Dequeue();
             child.gameObject.SetActive(true);
-            child.position += Vector3.up * fallHeight;
-            animatingObjects.Add(child.DOMoveY(originalHeights[child].y, fallTime).SetEase(Ease.OutQuint).AsyncWaitForCompletion());
+            child.position += targetOffset;
+            animatingObjects.Add(child.DOMoveY(originalHeights[child].y, animTime).SetEase(Ease.OutQuint).AsyncWaitForCompletion());
 
             await Awaitable.WaitForSecondsAsync(spawnDelay);
         }
@@ -68,8 +86,8 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         while (queue.Count > 0)
         {
             Transform child = queue.Pop();
-            float animTargetY = child.position.y + fallHeight;
-            animatingObjects.Add(child.DOMoveY(animTargetY, fallTime).SetEase(Ease.InQuint).OnComplete(() =>
+            Vector3 animTargetPos = child.position + targetOffset;
+            animatingObjects.Add(child.DOMove(animTargetPos, animTime).SetEase(Ease.InQuint).OnComplete(() =>
             {
                 child.transform.position = originalHeights[child];
                 child.gameObject.SetActive(false);
@@ -79,5 +97,6 @@ public class StationSpawnAnimator : SerializedMonoBehaviour
         }
 
         await Task.WhenAll(animatingObjects);
+        root?.SetActive(false);
     }
 }
