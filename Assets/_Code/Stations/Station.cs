@@ -32,8 +32,9 @@ public class Station : MonoBehaviour
 
     private void HandlePlayerHeightChanged(float newHeight)
     {
+        Debug.Log($"Recieved player height update: {newHeight}", this);
         Ray ray = new Ray(transform.position + Vector3.up * 2, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit, 20, LayerMask.GetMask("Ground"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out RaycastHit hit, 20, LayerMask.GetMask("Placeable"), QueryTriggerInteraction.Ignore))
         {
             // Place the counter surface just below the player's head
             Debug.DrawLine(ray.origin, hit.point, Color.green);
@@ -41,10 +42,11 @@ public class Station : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction, Color.red);
-            Debug.LogError("Station find-ground raycast failed", this);
+            Debug.DrawRay(ray.origin, ray.direction, Color.red, 10);
+            Debug.LogError($"Station find-ground raycast failed: {ray}", this);
         }
     }
 
     #endregion
+
 }

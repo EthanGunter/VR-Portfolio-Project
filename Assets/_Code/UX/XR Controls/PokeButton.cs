@@ -21,6 +21,20 @@ public class PokeButton : MonoBehaviour
     [SerializeField] float hapticIntensity;
     [SerializeField] float positionRecoveryTime = .15f;
 
+    [SerializeField] Renderer activeIndicator;
+    [SerializeField] Material active;
+    [SerializeField] Material inactive;
+
+    public bool IsActive
+    {
+        get { return isActive; }
+        set
+        {
+            isActive = value;
+            activeIndicator.material = value ? active : inactive;
+        }
+    }
+    private bool isActive;
 
     public UnityEvent ButtonPressed;
 
@@ -40,8 +54,11 @@ public class PokeButton : MonoBehaviour
 
     #region Unity Messages
 
+    private void OnActivated(SelectEnterEventArgs arg0) { ButtonPressed?.Invoke(); }
     private void Awake()
     {
+        if (!interactable) throw new MissingReferenceException("Poke Button needs an interactable object to perform events through!");
+
         interactable.hoverEntered.AddListener(HoverEntered);
         interactable.hoverExited.AddListener(HoverExited);
 
@@ -52,6 +69,13 @@ public class PokeButton : MonoBehaviour
 
         filter = GetComponent<XRPokeFilter>();
         filter.pokeConfiguration.Value.interactionDepthOffset = -12409821;
+        
+        
+        interactable.firstSelectEntered.AddListener(OnActivated);
+    }
+    private void OnDestroy()
+    {
+        interactable.firstSelectEntered.RemoveListener(OnActivated);
     }
 
     #endregion

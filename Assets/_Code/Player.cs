@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector.Editor.TypeSearch;
 using SolarStorm.UnityToolkit;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.XR;
 using UnityEngine.XR.OpenXR.Input;
 
-public class Player : MonoBehaviour
+public class Player : Singleton<Player>
 {
     #region Variables
 
@@ -31,8 +32,9 @@ public class Player : MonoBehaviour
 
     #region Unity Messages
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         XROrigin = Object.FindFirstObjectByType<XROrigin>();
         Head = Object.FindFirstObjectByType<Camera>().transform;
         InputSystem.onDeviceChange += OnDeviceChange;
@@ -44,6 +46,11 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+
+    public static void RequestHeightUpdate()
+    {
+        instance.playerHeightChanged.Invoke(Player.XROrigin.CameraYOffset);
+    }
 
     private IEnumerator Initialize()
     {
@@ -74,30 +81,30 @@ public class Player : MonoBehaviour
         }
 
         // Raise the pedestal so it's at an easy reading height
-        playerHeightChanged.Invoke(Player.XROrigin.CameraYOffset);
+        RequestHeightUpdate();
     }
 
     private void OnDeviceChange(UnityEngine.InputSystem.InputDevice device, InputDeviceChange state)
     {
-        Debug.Log($"({device.GetType().Name}) is now {state} | {string.Join(", ", device.usages.Select(x => x.ToString() + ", "))}", this);
+        //Debug.Log($"({device.GetType().Name}) is now {state} | {string.Join(", ", device.usages.Select(x => x.ToString() + ", "))}", this);
 
         if (state == InputDeviceChange.Enabled || state == InputDeviceChange.Reconnected)
         {
             if (device is TrackedDevice)
             {
-                Debug.Log("HEADSET CONNECTED", this);
+                //Debug.Log("HEADSET CONNECTED", this);
                 HMDConnected = true;
             }
             else if (device is XRController)
             {
                 if (device.usages.Any(x => x.Equals("RightHand")))
                 {
-                    Debug.Log("RIGHT CTRL CONNECTED", this);
+                    //Debug.Log("RIGHT CTRL CONNECTED", this);
                     RightControllerConnected = true;
                 }
                 if (device.usages.Any(x => x.Equals("LeftHand")))
                 {
-                    Debug.Log("LEFT CTRL CONNECTED", this);
+                    //Debug.Log("LEFT CTRL CONNECTED", this);
                     LeftControllerConnected = true;
                 }
             }
@@ -106,19 +113,19 @@ public class Player : MonoBehaviour
         {
             if (device is XRHMD)
             {
-                Debug.Log("HEADSET LOST", this);
+                //Debug.Log("HEADSET LOST", this);
                 HMDConnected = false;
             }
             else if (device is XRController)
             {
                 if (device.usages.Any(x => x.Equals("RightHand")))
                 {
-                    Debug.Log("RIGHT CTRL LOST", this);
+                    //Debug.Log("RIGHT CTRL LOST", this);
                     RightControllerConnected = false;
                 }
                 if (device.usages.Any(x => x.Equals("LeftHand")))
                 {
-                    Debug.Log("LEFT CTRL LOST", this);
+                    //Debug.Log("LEFT CTRL LOST", this);
                     LeftControllerConnected = false;
                 }
             }

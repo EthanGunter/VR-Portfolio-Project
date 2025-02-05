@@ -38,10 +38,10 @@ namespace SolarStorm.UnityToolkit
         /// <summary>
         /// Returns the first instance of a component in the ancestor heirarchy
         /// </summary>
-        public static T GetComponentInAncestors<T>(this Transform transform) where T : Component
+        public static T GetComponentInAncestors<T>(this Transform transform, bool includeSelf = false) where T : Component
         {
             T component = null;
-            Transform target = transform.parent;
+            Transform target = includeSelf ? transform : transform.parent;
             do
             {
                 component = target.GetComponent<T>();
@@ -50,6 +50,26 @@ namespace SolarStorm.UnityToolkit
             while (target != null && component == null);
 
             return component;
+        }
+
+        /// <summary>
+        /// Returns all instances of a component type in the ancestor heirarchy
+        /// </summary>
+        public static List<T> GetComponentsInAncestors<T>(this Transform transform, bool includeSelf = false) where T : Component
+        {
+            T component = null;
+            List<T> components = new();
+            Transform target = includeSelf ? transform : transform.parent;
+            do
+            {
+                component = target.GetComponent<T>();
+                if (component != null) components.Add(component);
+
+                target = target.parent;
+            }
+            while (target != null && component == null);
+
+            return components;
         }
     }
     public static class ComponentExtensions

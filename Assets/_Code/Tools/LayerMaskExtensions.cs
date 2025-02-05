@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public static class LayerMaskExtensions
 {
@@ -21,5 +22,10 @@ public static class LayerMaskExtensions
     public static void Remove(ref this LayerMask mask, int layer)
     {
         mask &= ~(1 << layer);
+    }
+
+    public static bool Contains(this InteractionLayerMask mask, int layer)
+    {
+        return (0 != (mask & (1 << layer)));
     }
 }
