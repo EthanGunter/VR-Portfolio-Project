@@ -10,12 +10,11 @@ public class WristUI : MonoBehaviour
 {
     #region Inspector Fields
 
-    [SerializeField] ContextMenuData menuData;
-
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] Transform rotationParent;
     [SerializeField] float fadeTime = .2f;
-    [SerializeField] float onThreshold = .9f;
+    [SerializeField, Tooltip("0 only checks the angle of the watch, 1 only checks the angle of the headset")] float facingWeight = .8f;
+    [SerializeField] float onThreshold = .8f;
 
     #endregion
 
@@ -51,8 +50,14 @@ public class WristUI : MonoBehaviour
     /// </summary>
     private void CalculateOpacity()
     {
-        float facingPlayerDot = Vector3.Dot(Player.Head.transform.forward, canvasGroup.transform.forward);
-        if (facingPlayerDot > onThreshold)
+        Vector3 headToWatchVec = (transform.position - Player.Head.transform.position).normalized;
+        Vector3 watchToHeadVec = (Player.Head.transform.position - transform.position).normalized;
+
+        float playerFacingDot = Vector3.Dot(headToWatchVec, Player.Head.transform.forward);
+        float facingPlayerDot = Vector3.Dot(watchToHeadVec, -canvasGroup.transform.forward); // Unity canvases are backward for some reason
+        if (facingPlayerDot < 0) facingPlayerDot = -1;
+
+        if ((facingPlayerDot * (1 - facingWeight) + playerFacingDot * facingWeight) > onThreshold)
         {
             // If Facing the player
             if (!Open)
