@@ -36,7 +36,17 @@ public class WristMenuController : MonoBehaviour
         }
     }
 
+    public Button AddTab(string key, string displayName)
+    {
+        Button tabButton = CreateTextTabButton(displayName);
+        contextTabs.Add(key, tabButton);
 
+        tabButton.transform.SetParent(tabContainer, false);
+
+        return tabButton;
+    }
+
+    public void RemoveTab(string key) => RemoveContextMenu(key);
     public void RemoveContextMenu(string key)
     {
         if (contexts.TryGetValue(key, out var context))
@@ -66,7 +76,7 @@ public class WristMenuController : MonoBehaviour
             CreateImageTabButton(displayIcon),
             content);
     }
-    public void AddContextMenu(string key, RectTransform tabPrefab, RectTransform content)
+    public Button AddContextMenu(string key, RectTransform tabPrefab, RectTransform content)
     {
         if (tabPrefab.GetComponent<Button>() == null)
             throw new ArgumentException($"{tabPrefab.name} cannot be used as a tabPrefab button because it has no button component");
@@ -77,6 +87,8 @@ public class WristMenuController : MonoBehaviour
             key,
             btn,
             content);
+
+        return btn;
     }
 
     private void AddContextMenu(string key, Button tabButton, RectTransform content)

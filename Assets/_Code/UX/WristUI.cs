@@ -19,7 +19,7 @@ public class WristUI : MonoBehaviour
     #endregion
 
 
-    public bool Open { get; private set; }
+    public bool Open { get; private set; } = true;
 
     private Tween fadeTween;
 
